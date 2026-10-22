@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Visualizador 3D</title>
+<meta name="description" content="Converte modelos 3D (STEP, IGES, IFC, STL, OBJ, GLB e HTML) em página com link para abrir no celular.">
+<meta name="robots" content="noindex,nofollow">
+<link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Modelos 3D">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="theme-color" content="#0c151c">
+<script type="importmap">{"imports":{"three":"./lib/three/build/three.module.js"}}</script>
+<style>
+:root{color-scheme:dark;--bg:#0c151c;--panel:#111f28;--line:#293c48;--muted:#9eb0bc;--accent:#55e0b4;--warn:#e2ba77;--bad:#ef7d6d}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}body{margin:0;font:14px 'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:#e8f0f4;padding-bottom:env(safe-area-inset-bottom)}
+button,input,select{font:inherit}button,select,.btn{background:#1a2c37;color:#e8f0f4;border:1px solid #38505e;border-radius:7px;padding:8px 12px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;min-height:36px}
+button:hover,.btn:hover{border-color:var(--accent)}button:disabled{opacity:.45;cursor:default}button.pri{background:#1f4a3f;border-color:var(--accent);color:#dffbf1}button.bad{color:var(--bad)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:calc(14px + env(safe-area-inset-top)) 20px 14px;border-bottom:1px solid var(--line)}
+h1{font-size:21px;margin:2px 0;font-weight:600;letter-spacing:.4px}h2{font-size:15px;margin:0 0 12px;font-weight:600}.eyebrow{color:var(--accent);font-size:10px;letter-spacing:2px;text-transform:uppercase}
+.badge{border:1px solid #355248;border-radius:30px;padding:5px 11px;color:var(--accent);font-size:11px;white-space:nowrap}.badge.off{color:var(--warn);border-color:#5a4a2c}
+main{max-width:1100px;margin:0 auto;padding:18px 16px 40px;display:grid;gap:18px}
+section{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px}
+.muted{color:var(--muted)}.small{font-size:12px}.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.list{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(290px,1fr))}
+.card{border:1px solid var(--line);border-radius:10px;padding:13px;background:#0f1c24;display:grid;gap:8px;min-width:0}
+.card b{font-size:15px;overflow-wrap:anywhere}.card .meta{font-size:12px;color:var(--muted);line-height:1.5}.card .row button,.card .row .btn{padding:6px 10px;font-size:12px;min-height:32px}
+.ok{color:var(--accent)}.drop{border:1.5px dashed #3b5664;border-radius:10px;padding:22px;text-align:center;cursor:pointer;color:var(--muted)}.drop.on{border-color:var(--accent);color:var(--accent)}
+.files{display:grid;gap:8px;margin-top:12px}.file{display:grid;grid-template-columns:1fr minmax(120px,220px) auto;gap:8px;align-items:center;border-bottom:1px solid #22343f;padding-bottom:8px}
+.file .nm{overflow-wrap:anywhere;font-size:13px}.file .fmt{font-size:11px;color:var(--muted)}.file input{width:100%}
+input[type=text],input[type=password]{background:#0b171f;color:#fff;border:1px solid var(--line);border-radius:8px;padding:9px 10px;min-width:0}
+.grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));margin-top:14px}.grid label{display:grid;gap:5px;font-size:11px;color:var(--muted);letter-spacing:.5px;text-transform:uppercase}
+.grid select,.grid input{width:100%;text-transform:none;letter-spacing:0}
+#log{font:12px/1.5 ui-monospace,Consolas,monospace;color:var(--muted);white-space:pre-wrap;margin-top:12px;max-height:180px;overflow:auto}
+#result{display:none;gap:12px}#result.on{display:grid}#prev{width:100%;height:min(70vh,560px);border:1px solid var(--line);border-radius:10px;background:#0b161f}
+.warn{color:var(--warn)}.err{color:var(--bad)}
+dialog{background:var(--panel);color:#e8f0f4;border:1px solid var(--line);border-radius:12px;max-width:min(560px,calc(100vw - 32px));padding:18px}dialog::backdrop{background:#000a}
+dialog ol{padding-left:20px;line-height:1.6}#qr svg{background:#fff;border-radius:8px;display:block;margin:10px auto;max-width:260px;height:auto}
+.link{font:12px ui-monospace,Consolas,monospace;overflow-wrap:anywhere;background:#0b171f;border:1px solid var(--line);border-radius:7px;padding:8px}
+@media (max-width:640px){header{padding-left:16px;padding-right:16px}h1{font-size:18px}.file{grid-template-columns:1fr auto}.file input{grid-column:1/-1;grid-row:2}.list{grid-template-columns:1fr}}
+</style></head>
+<body>
+<header><div><div class="eyebrow">Engenharia naval / modelos 3D</div><h1>Visualizador 3D</h1></div>
+<div class="row"><span id="net" class="badge">ONLINE</span><button id="cfg" title="Configurar publicação">Publicação</button></div></header>
+<main>
+<section><div class="row" style="justify-content:space-between"><h2 style="margin:0">Modelos publicados</h2><button id="reload">Atualizar lista</button></div>
+<p class="muted small" id="dica">Toque em <b>Abrir</b> para ver o modelo. <b>Guardar offline</b> deixa o modelo neste aparelho para abrir sem sinal.</p>
+<div id="lista" class="list"><p class="muted">Carregando…</p></div></section>
+
+<section id="conv"><h2>Converter e publicar</h2>
+<div id="drop" class="drop" tabindex="0" role="button">Solte aqui os arquivos ou toque para escolher<br><span class="small">STEP · IGES · BREP · IFC · STL · OBJ · GLB · GLTF · HTML já gerado (navio, movelaria, HVAC, elétrica, Codex)<br>Cada arquivo vira uma disciplina, que pode ser ligada e desligada no visualizador.</span></div>
+<input id="pick" type="file" multiple hidden accept=".step,.stp,.iges,.igs,.brep,.ifc,.stl,.obj,.glb,.gltf,.html,.htm,.sldasm,.sldprt">
+<div id="files" class="files"></div>
+<div class="grid">
+<label>Projeto<input id="projeto" type="text" placeholder="AREMBEPE"></label>
+<label>Subtítulo<input id="sub" type="text" placeholder="navio completo"></label>
+<label>Qualidade<select id="qual"><option value="normal">Normal (igual ao navio)</option><option value="leve">Leve (celular antigo)</option><option value="maxima">Máxima (sem simplificar)</option></select></label>
+<label>Unidade do arquivo<select id="unid"><option value="auto">Automática</option><option value="0.001">Milímetro</option><option value="1">Metro</option><option value="0.0254">Polegada</option></select></label>
+<label>Eixo vertical<select id="eixo"><option value="auto">Automático</option><option value="Z">Z para cima</option><option value="Y">Y para cima</option></select></label>
+</div>
+<div class="row" style="margin-top:14px"><button id="go" class="pri" disabled>Converter</button><span id="estado" class="muted small"></span></div>
+<div id="log"></div>
+<div id="result"><div id="resumo" class="small"></div><iframe id="prev" title="Prévia do modelo convertido"></iframe>
+<div class="row"><button id="pub" class="pri">Publicar e gerar link</button><button id="baixar">Baixar HTML</button><span id="pubst" class="small muted"></span></div></div>
+</section>
+<p class="muted small" style="text-align:center">Quem tiver o link vê o modelo, sem login. A conversão é feita neste aparelho; o arquivo só sai daqui ao publicar.</p>
+</main>
+
+<dialog id="dcfg"><h2>Publicação</h2>
+<p class="small">Para publicar daqui (PC ou celular), o site precisa de uma chave do GitHub da conta dona do site. A chave fica guardada só neste aparelho e não aparece mais depois de salva.</p>
+<ol class="small"><li>Entre em <b>github.com</b> com a conta do site e abra <b>Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token</b>.</li>
+<li>Nome: <b>visualizador-3d</b>. Validade: até 1 ano. <b>Repository access → Only select repositories →</b> <span id="reponame"></span>.</li>
+<li><b>Permissions → Repository permissions → Contents: Read and write</b>. Gere e copie a chave.</li><li>Cole abaixo e toque em Salvar.</li></ol>
+<div class="row"><input id="tok" type="password" placeholder="github_pat_…" autocomplete="off" style="flex:1"><button id="savetok" class="pri">Salvar</button></div>
+<p id="tokst" class="small muted"></p>
+<div class="row"><button id="deltok" class="bad">Apagar chave deste aparelho</button><button id="closecfg">Fechar</button></div></dialog>
+
+<dialog id="dqr"><h2 id="qrt">Link</h2><div id="qr"></div><div class="link" id="qrl"></div>
+<div class="row" style="margin-top:12px"><button id="copy">Copiar link</button><button id="closeqr">Fechar</button></div></dialog>
+
+<script src="lib/qrcode/qrcode.js"></script>
+<script type="module" src="app.js"></script>
+</body></html>
