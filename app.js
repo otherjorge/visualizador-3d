@@ -18,14 +18,20 @@ async function api(path, opt = {}) {
   if (!r.ok) throw Error((d && d.erro) || t.slice(0, 300) || 'HTTP ' + r.status);
   return d;
 }
-if (LOCAL) { setInterval(() => api('api/ping', { method: 'POST' }).catch(() => { }), 60000); addEventListener('pagehide', () => navigator.sendBeacon('api/tchau')) }
+if (LOCAL) {
+  setInterval(() => api('api/ping', { method: 'POST' }).catch(() => { }), 30000);
+  addEventListener('pagehide', e => navigator.sendBeacon('api/tchau', JSON.stringify({ motivo: 'pagehide', persisted: e.persisted, vis: document.visibilityState })));
+}
+// no PC as bibliotecas de conversão ficam guardadas logo ao abrir: se o servidor fechar, a conversão segue
+const LIBS = ['lib/three/build/three.module.js', 'lib/occt/occt-import-js.js', 'lib/occt/occt-import-js.wasm', 'lib/web-ifc/web-ifc-api.js', 'lib/web-ifc/web-ifc.wasm', 'lib/fflate/browser.js'];
 const store = { get(k) { try { return localStorage.getItem(k) } catch (e) { return null } }, set(k, v) { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v) } catch (e) { } } };
 
 // ---------- offline (service worker) ----------
 let sw = null;
 const pendentes = new Map();
 if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
-  navigator.serviceWorker.register('sw.js').then(() => navigator.serviceWorker.ready).then(r => { sw = r.active; renderLista() }).catch(() => { });
+  navigator.serviceWorker.register('sw.js').then(() => navigator.serviceWorker.ready).then(r => { sw = r.active; renderLista();
+    if (LOCAL) caches.open('vis3d-lib-v1').then(c => Promise.all(LIBS.map(async u => { const k = new URL(u, SITE).href; if (!(await c.match(k))) { const x = await fetch(k); if (x.ok) await c.put(k, x) } }))).catch(() => { }) }).catch(() => { });
   navigator.serviceWorker.addEventListener('message', e => { const d = e.data || {}, url = d.guardado || d.apagado || d.falhou; const f = pendentes.get(url); if (f) { pendentes.delete(url); f(d) } });
 }
 const pedir = msg => new Promise(res => { const url = msg.guardar || msg.apagar; pendentes.set(url, res); (navigator.serviceWorker.controller || sw).postMessage(msg); setTimeout(() => pendentes.has(url) && (pendentes.delete(url), res({ falhou: url, erro: 'tempo esgotado' })), 300000) });
@@ -207,7 +213,8 @@ $('#go').onclick = async () => {
     const old = $('#prev').src; $('#prev').src = URL.createObjectURL(new Blob([bytes], { type: 'text/html' })); if (old.startsWith('blob:')) URL.revokeObjectURL(old);
     $('#result').classList.add('on'); $('#pub').disabled = bytes.length > 95e6; $('#pubst').textContent = temChave() ? '' : 'Para publicar, configure a chave em "Publicação".';
     estado('Pronto. Confira a prévia.'); log('Pronto em ' + seg + ' s.', 'ok');
-  } catch (e) { console.error(e); estado(''); log('Erro: ' + (e.message || e), 'err') }
+  } catch (e) { console.error(e); estado(''); log('Erro: ' + (e.message || e), 'err');
+    if (LOCAL && !(await fetch('api/ola', { cache: 'no-store' }).then(r => r.ok, () => false))) log('O servidor do app fechou. Feche esta janela e abra de novo pelo ABRIR_VISUALIZADOR.cmd.', 'err') }
   $('#go').disabled = !arquivos.length;
 };
 $('#baixar').onclick = () => { if (!gerado) return; const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([gerado.bytes], { type: 'text/html' }));

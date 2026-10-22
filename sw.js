@@ -20,7 +20,9 @@ self.addEventListener('fetch', e => {
   const req = e.request; if (req.method !== 'GET' || !req.url.startsWith(ESCOPO)) return;
   const rel = req.url.slice(ESCOPO.length);
   if (rel.startsWith('lib/')) {
-    e.respondWith(caches.open(LIB).then(async c => (await c.match(req)) || fetch(req).then(r => { if (r.ok) c.put(req, r.clone()); return r })));
+    // pedido NOVO pelo endereço: repassar o pedido original da página (fetch(req)) falhou no app do PC em 22/10
+    const k = chave(req.url);
+    e.respondWith(caches.open(LIB).then(async c => (await c.match(k)) || fetch(k, { credentials: 'same-origin' }).then(r => { if (r.ok) c.put(k, r.clone()); return r })));
   } else if (rel.startsWith('m/')) {
     // modelo: só fica no aparelho quem foi guardado (ou já aberto); abrir de novo atualiza a cópia
     e.respondWith(redePrimeiro(req, MOD, 6000));
