@@ -7,7 +7,18 @@ const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;',
 const REPO = (() => { const h = location.hostname.match(/^([^.]+)\.github\.io$/i), p = location.pathname.split('/').filter(Boolean)[0];
   return h && p ? { owner: h[1], repo: p } : { owner: 'otherjorge', repo: 'visualizador-3d' } })();
 const SITE = new URL('.', location.href).href;
+// no PC (ABRIR_VISUALIZADOR.cmd) a página roda no servidor local do app: modelos do disco e publicação pelo login do gh, sem chave
+const LOCAL = /^(127\.0\.0\.1|localhost)$/.test(location.hostname) ? await fetch('api/ola', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null) : null;
+// link e QR sempre do endereço público (é o que abre no celular)
+const PUBLICO = LOCAL ? LOCAL.publico : /\.github\.io$/i.test(location.hostname) ? SITE : 'https://' + REPO.owner + '.github.io/' + REPO.repo + '/';
 const TOKEN_KEY = 'vis3d_token';
+async function api(path, opt = {}) {
+  const r = await fetch(path, { ...opt, headers: { 'X-Vis3d': '1', ...(opt.headers || {}) } }), t = await r.text();
+  let d = null; try { d = t ? JSON.parse(t) : null } catch (e) { }
+  if (!r.ok) throw Error((d && d.erro) || t.slice(0, 300) || 'HTTP ' + r.status);
+  return d;
+}
+if (LOCAL) { setInterval(() => api('api/ping', { method: 'POST' }).catch(() => { }), 60000); addEventListener('pagehide', () => navigator.sendBeacon('api/tchau')) }
 const store = { get(k) { try { return localStorage.getItem(k) } catch (e) { return null } }, set(k, v) { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v) } catch (e) { } } };
 
 // ---------- offline (service worker) ----------
@@ -25,7 +36,7 @@ addEventListener('online', net); addEventListener('offline', net); net();
 // ---------- lista ----------
 let modelos = [];
 async function carregarLista() {
-  try { const r = await fetch('models.json?t=' + Date.now(), { cache: 'no-store' }); modelos = r.ok ? await r.json() : [] }
+  try { if (LOCAL) modelos = await api('api/lista'); else { const r = await fetch('models.json?t=' + Date.now(), { cache: 'no-store' }); modelos = r.ok ? await r.json() : [] } }
   catch (e) { try { const r = await caches.match(new URL('models.json', SITE).href); modelos = r ? await r.json() : [] } catch (e2) { modelos = [] } }
   renderLista();
 }
@@ -34,13 +45,14 @@ async function renderLista() {
   if (!modelos.length) { box.innerHTML = '<p class="muted">Nenhum modelo publicado ainda. Converta um arquivo abaixo.</p>'; return }
   const ord = [...modelos].sort((a, b) => (b.data || '').localeCompare(a.data || ''));
   box.replaceChildren(...await Promise.all(ord.map(async m => {
-    const url = new URL(m.arquivo, SITE).href, off = await emCache(url), c = document.createElement('div'); c.className = 'card';
+    const url = new URL(m.arquivo, SITE).href, off = !LOCAL && await emCache(url), c = document.createElement('div'); c.className = 'card';
+    // no PC o modelo já está no disco (clone do site): sem botão de guardar
     c.innerHTML = `<b>${esc(m.projeto)} <span class="muted" style="font-weight:400">/ ${esc(m.sub)}</span></b>
-      <div class="meta">${esc((m.disciplinas || []).map(d => d.label).join(' · '))}<br>${fmtN(m.pecas || 0)} peças · ${MB(m.bytes || 0)} · ${esc(m.dataTexto || m.data || '')}${off ? '<br><span class="ok">✓ guardado neste aparelho (abre sem sinal)</span>' : ''}</div>
-      <div class="row"><a class="btn" href="${esc(m.arquivo)}">Abrir</a><button data-a="qr">Link / QR</button><button data-a="off">${off ? 'Tirar do aparelho' : 'Guardar offline'}</button><button data-a="del" class="bad" title="Apagar do site">Apagar</button></div>`;
-    c.querySelector('[data-a=qr]').onclick = () => mostrarQr(m.projeto + ' / ' + m.sub, url);
+      <div class="meta">${esc((m.disciplinas || []).map(d => d.label).join(' · '))}<br>${fmtN(m.pecas || 0)} peças · ${MB(m.bytes || 0)} · ${esc(m.dataTexto || m.data || '')}${off ? '<br><span class="ok">✓ guardado neste aparelho (abre sem sinal)</span>' : LOCAL ? '<br><span class="ok">✓ no disco deste PC (abre sem internet)</span>' : ''}</div>
+      <div class="row"><a class="btn" href="${esc(m.arquivo)}">Abrir</a><button data-a="qr">Link / QR</button>${LOCAL ? '' : `<button data-a="off">${off ? 'Tirar do aparelho' : 'Guardar offline'}</button>`}<button data-a="del" class="bad" title="Apagar do site">Apagar</button></div>`;
+    c.querySelector('[data-a=qr]').onclick = () => mostrarQr(m.projeto + ' / ' + m.sub, new URL(m.arquivo, PUBLICO).href);
     const bo = c.querySelector('[data-a=off]');
-    bo.onclick = async () => {
+    if (bo) bo.onclick = async () => {
       if (!sw && !navigator.serviceWorker?.controller) return alert('Modo offline indisponível neste navegador.');
       bo.disabled = true; bo.textContent = off ? 'Tirando…' : 'Baixando ' + MB(m.bytes || 0) + '…';
       const r = await pedir(off ? { apagar: url } : { guardar: url });
@@ -63,8 +75,9 @@ $('#closeqr').onclick = () => $('#dqr').close();
 
 // ---------- chave do GitHub ----------
 $('#reponame').textContent = REPO.owner + '/' + REPO.repo;
-const temChave = () => !!store.get(TOKEN_KEY);
-function estadoChave(msg) { $('#tokst').textContent = msg || (temChave() ? 'Chave configurada neste aparelho ✓' : 'Sem chave: dá para converter e baixar, mas não publicar.') }
+const temChave = () => !!LOCAL || !!store.get(TOKEN_KEY);
+function estadoChave(msg) { $('#tokst').textContent = msg || (LOCAL ? 'Neste PC não precisa de chave.' : temChave() ? 'Chave configurada neste aparelho ✓' : 'Sem chave: dá para converter e baixar, mas não publicar.') }
+if (LOCAL) { $('#cfglocal').hidden = false; $('#cfglocal').textContent = 'Neste PC a publicação vai pelo login do GitHub já feito aqui (gh), sem chave. A chave abaixo só é preciso no celular ou em outro computador.' + (LOCAL.git === 'ok' || LOCAL.git === 'conferindo' ? '' : ' Atenção: ' + LOCAL.git) }
 $('#cfg').onclick = () => { $('#tok').value = ''; estadoChave(); $('#dcfg').showModal() };
 $('#closecfg').onclick = () => $('#dcfg').close();
 $('#deltok').onclick = () => { store.set(TOKEN_KEY, null); estadoChave() };
@@ -84,7 +97,12 @@ async function gh(path, opt = {}, tok = store.get(TOKEN_KEY)) {
 const b64 = u8 => { const o = []; for (let i = 0; i < u8.length; i += 49152) o.push(btoa(String.fromCharCode.apply(null, u8.subarray(i, i + 49152)))); return o.join('') };
 // um commit só com vários arquivos (bytes = null apaga)
 async function commit(arquivos, msg, prog) {
-  const R = '/repos/' + REPO.owner + '/' + REPO.repo, ref = await gh(R + '/git/ref/heads/main'), pai = ref.object.sha, cm = await gh(R + '/git/commits/' + pai), tree = [];
+  if (LOCAL) {   // grava no clone do PC e o servidor faz commit e push com o login do gh
+    for (const a of arquivos) { a.bytes && prog && prog('Gravando ' + a.path + ' (' + MB(a.bytes.length) + ')…');
+      await api('api/arquivo?path=' + encodeURIComponent(a.path), a.bytes === null ? { method: 'DELETE' } : { method: 'PUT', body: a.bytes }) }
+    prog && prog('Enviando ao GitHub…'); await api('api/enviar', { method: 'POST', body: JSON.stringify({ msg }) }); return;
+  }
+  const R ='/repos/' + REPO.owner + '/' + REPO.repo, ref = await gh(R + '/git/ref/heads/main'), pai = ref.object.sha, cm = await gh(R + '/git/commits/' + pai), tree = [];
   for (const a of arquivos) {
     if (a.bytes === null) { tree.push({ path: a.path, mode: '100644', type: 'blob', sha: null }); continue }
     prog && prog('Enviando ' + a.path + ' (' + MB(a.bytes.length) + ')…');
@@ -96,6 +114,7 @@ async function commit(arquivos, msg, prog) {
   await gh(R + '/git/refs/heads/main', { method: 'PATCH', body: JSON.stringify({ sha: c.sha }) });
 }
 async function listaAtual() {
+  if (LOCAL) return api('api/lista');
   try { const r = await gh('/repos/' + REPO.owner + '/' + REPO.repo + '/contents/models.json?ref=main'); const s = atob(r.content.replace(/\s/g, ''));
     return JSON.parse(new TextDecoder().decode(Uint8Array.from(s, c => c.charCodeAt(0)))) }
   catch (e) { if (/ 404:/.test(e.message)) return []; throw e }
@@ -105,7 +124,8 @@ const json = v => new TextEncoder().encode(JSON.stringify(v, null, 1) + '\n');
 async function esperarNoAr(carimbo, prog) {
   for (let i = 0; i < 90; i++) {
     prog('Publicado. Aguardando o site atualizar (' + (i * 5) + ' s)…');
-    try { const l = await (await fetch('models.json?t=' + Date.now(), { cache: 'no-store' })).json(); if (carimbo === null ? true : l.some(m => m.data === carimbo)) { modelos = l; return true } } catch (e) { }
+    // sempre o endereço público (no PC, o models.json local já está novo antes de o site atualizar)
+    try { const l = await (await fetch(PUBLICO + 'models.json?t=' + Date.now(), { cache: 'no-store' })).json(); if (carimbo === null ? true : l.some(m => m.data === carimbo)) { modelos = l; return true } } catch (e) { }
     await new Promise(r => setTimeout(r, 5000));
   }
   return false;
@@ -204,7 +224,7 @@ $('#pub').onclick = async () => {
       disciplinas: gerado.discs, pecas: gerado.pecas, bytes: gerado.bytes.length, data: carimbo, dataTexto: agora.toLocaleString('pt-BR') };
     const nova = [...l.filter(m => m.slug !== slug), item];
     await commit([{ path: item.arquivo, bytes: gerado.bytes }, { path: 'models.json', bytes: json(nova) }], (ja ? 'Atualiza ' : 'Publica ') + slug, st);
-    const ok = await esperarNoAr(carimbo, st), url = new URL(item.arquivo, SITE).href;
+    const ok = await esperarNoAr(carimbo, st), url = new URL(item.arquivo, PUBLICO).href;
     st(ok ? 'No ar ✓' : 'Enviado; o site ainda está atualizando (tente em 1–2 min).'); renderLista(); mostrarQr(item.projeto + ' / ' + item.sub, url);
   } catch (e) { st('Erro: ' + e.message) }
   $('#pub').disabled = false;
