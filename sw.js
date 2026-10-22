@@ -1,6 +1,6 @@
 // Service worker do Visualizador 3D: guarda o app e os modelos no aparelho para abrir sem sinal.
 // Rede primeiro (com tempo limite) para páginas e lista, que mudam; cache primeiro para as bibliotecas, que não mudam.
-const APP = 'vis3d-app-v1', LIB = 'vis3d-lib-v1', MOD = 'vis3d-modelos';
+const APP = 'vis3d-app-v2', LIB = 'vis3d-lib-v1', MOD = 'vis3d-modelos';
 const SHELL = ['./', 'index.html', 'app.js', 'conversor.js', 'molde.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png', 'lib/qrcode/qrcode.js'];
 const ESCOPO = new URL('./', self.location).href;
 
@@ -10,7 +10,8 @@ self.addEventListener('activate', e => e.waitUntil(caches.keys().then(ks => Prom
 const chave = url => { const u = new URL(url); u.search = ''; u.hash = ''; return u.href };
 async function redePrimeiro(req, cacheNome, ms) {
   const k = chave(req.url), cache = await caches.open(cacheNome), guardado = await cache.match(k);
-  const rede = fetch(req).then(r => { if (r.ok) cache.put(k, r.clone()); return r });
+  // no-cache: revalida com o servidor (o GitHub Pages manda guardar 10 min; sem isso a atualização demora a aparecer)
+  const rede = fetch(req.url, { cache: 'no-cache', credentials: 'same-origin' }).then(r => { if (r.ok) cache.put(k, r.clone()); return r });
   if (!guardado) return rede;
   const tempo = new Promise(res => setTimeout(() => res(null), ms));
   try { return (await Promise.race([rede, tempo])) || guardado } catch (e) { return guardado }
