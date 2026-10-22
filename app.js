@@ -19,6 +19,7 @@ async function api(path, opt = {}) {
   return d;
 }
 if (LOCAL) {
+  $('#rodape').hidden = false; $('#rodape').textContent = 'Visualizador 3D v' + LOCAL.versao + ' · servidor deste PC';
   setInterval(() => api('api/ping', { method: 'POST' }).catch(() => { }), 30000);
   addEventListener('pagehide', e => navigator.sendBeacon('api/tchau', JSON.stringify({ motivo: 'pagehide', persisted: e.persisted, vis: document.visibilityState })));
 }
@@ -136,12 +137,46 @@ async function esperarNoAr(carimbo, prog) {
   }
   return false;
 }
+// apagar pede o nome digitado e guarda o modelo por alguns minutos para o Desfazer (em 22/10 um clique tirou o navio do ar)
+const DESFAZER_MIN = 10;
+let desfeito = null;
+function pedirNome(m) {
+  const alvo = (m.projeto || m.slug).trim(), norm = s => s.trim().toLocaleUpperCase('pt-BR');
+  $('#delnome').textContent = m.projeto + ' / ' + m.sub; $('#delpede').textContent = alvo; $('#delconf').value = ''; $('#delok').disabled = true;
+  $('#delnota').textContent = 'Depois de apagar, o botão Desfazer devolve o modelo no mesmo link por ' + DESFAZER_MIN + ' min, enquanto esta página estiver aberta.';
+  $('#delconf').oninput = () => { $('#delok').disabled = norm($('#delconf').value) !== norm(alvo) };
+  return new Promise(res => {
+    const d = $('#ddel'), fim = v => { d.onclose = null; d.close(); res(v) };
+    $('#delok').onclick = () => fim(true); $('#delcancel').onclick = () => fim(false); d.onclose = () => res(false);
+    d.showModal(); $('#delconf').focus();
+  });
+}
 async function apagarModelo(m) {
   if (!temChave()) return $('#cfg').click();
-  if (!confirm('Apagar "' + m.projeto + ' / ' + m.sub + '" do site? O link deixa de funcionar.')) return;
+  if (!(await pedirNome(m))) return;
+  // a cópia para o Desfazer: no PC vem do disco; no celular, do site (ou do que já está guardado no aparelho)
+  let bytes = null;
+  try { const r = await fetch(new URL(m.arquivo, SITE).href, { cache: 'no-store' }); if (r.ok) bytes = new Uint8Array(await r.arrayBuffer()) } catch (e) { }
+  if (!bytes && !confirm('Não deu para guardar uma cópia para desfazer (sem internet?). Apagar mesmo assim?')) return;
   try { const l = (await listaAtual()).filter(x => x.slug !== m.slug);
     await commit([{ path: m.arquivo, bytes: null }, { path: 'models.json', bytes: json(l) }], 'Apaga ' + m.slug);
-    modelos = l; renderLista() } catch (e) { alert('Não apagou: ' + e.message) }
+    modelos = l; renderLista(); if (bytes) mostrarDesfazer(m, bytes) } catch (e) { alert('Não apagou: ' + e.message) }
+}
+function mostrarDesfazer(m, bytes) {
+  if (desfeito) clearInterval(desfeito);
+  const ate = Date.now() + DESFAZER_MIN * 60000, box = $('#desfazer');
+  const esconder = () => { clearInterval(desfeito); desfeito = null; box.hidden = true; box.replaceChildren() };
+  const pinta = () => { const s = Math.max(0, Math.round((ate - Date.now()) / 1000)); if (!s) return esconder();
+    box.querySelector('span').textContent = 'Apagado: ' + m.projeto + ' / ' + m.sub + '. Dá para desfazer por mais ' + Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0') + '.' };
+  box.innerHTML = '<span class="small warn"></span><button class="pri">Desfazer</button>';
+  desfeito = setInterval(pinta, 1000); pinta(); box.hidden = false;
+  box.querySelector('button').onclick = async ev => {
+    const b = ev.currentTarget; b.disabled = true; b.textContent = 'Devolvendo…'; clearInterval(desfeito);
+    try { const l = (await listaAtual()).filter(x => x.slug !== m.slug); l.push(m);
+      await commit([{ path: m.arquivo, bytes }, { path: 'models.json', bytes: json(l) }], 'Devolve ' + m.slug + ' (desfazer)');
+      esconder(); modelos = l; renderLista() }
+    catch (e) { b.disabled = false; b.textContent = 'Desfazer'; desfeito = setInterval(pinta, 1000); alert('Não devolveu: ' + e.message) }
+  };
 }
 
 // ---------- conversão ----------

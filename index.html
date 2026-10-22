@@ -30,7 +30,8 @@ input[type=text],input[type=password]{background:#0b171f;color:#fff;border:1px s
 .grid select,.grid input{width:100%;text-transform:none;letter-spacing:0}
 #log{font:12px/1.5 ui-monospace,Consolas,monospace;color:var(--muted);white-space:pre-wrap;margin-top:12px;max-height:180px;overflow:auto}
 #result{display:none;gap:12px}#result.on{display:grid}#prev{width:100%;height:min(70vh,560px);border:1px solid var(--line);border-radius:10px;background:#0b161f}
-.warn{color:var(--warn)}.err{color:var(--bad)}
+.warn{color:var(--warn)}.err{color:var(--bad)}[hidden]{display:none!important}
+.desfazer{border:1px solid #5a4a2c;border-radius:10px;padding:10px 12px;background:#1b1a14;margin:0 0 12px;justify-content:space-between}
 dialog{background:var(--panel);color:#e8f0f4;border:1px solid var(--line);border-radius:12px;max-width:min(560px,calc(100vw - 32px));padding:18px}dialog::backdrop{background:#000a}
 dialog ol{padding-left:20px;line-height:1.6}#qr svg{background:#fff;border-radius:8px;display:block;margin:10px auto;max-width:260px;height:auto}
 .link{font:12px ui-monospace,Consolas,monospace;overflow-wrap:anywhere;background:#0b171f;border:1px solid var(--line);border-radius:7px;padding:8px}
@@ -42,6 +43,7 @@ dialog ol{padding-left:20px;line-height:1.6}#qr svg{background:#fff;border-radiu
 <main>
 <section><div class="row" style="justify-content:space-between"><h2 style="margin:0">Modelos publicados</h2><button id="reload">Atualizar lista</button></div>
 <p class="muted small" id="dica">Toque em <b>Abrir</b> para ver o modelo. <b>Guardar offline</b> deixa o modelo neste aparelho para abrir sem sinal.</p>
+<div id="desfazer" class="desfazer row" hidden></div>
 <div id="lista" class="list"><p class="muted">Carregando…</p></div></section>
 
 <section id="conv"><h2>Converter e publicar</h2>
@@ -61,6 +63,7 @@ dialog ol{padding-left:20px;line-height:1.6}#qr svg{background:#fff;border-radiu
 <div class="row"><button id="pub" class="pri">Publicar e gerar link</button><button id="baixar">Baixar HTML</button><span id="pubst" class="small muted"></span></div></div>
 </section>
 <p class="muted small" style="text-align:center">Quem tiver o link vê o modelo, sem login. A conversão é feita neste aparelho; o arquivo só sai daqui ao publicar.</p>
+<p id="rodape" class="muted small" style="text-align:center" hidden></p>
 </main>
 
 <dialog id="dcfg"><h2>Publicação</h2>
@@ -72,6 +75,13 @@ dialog ol{padding-left:20px;line-height:1.6}#qr svg{background:#fff;border-radiu
 <div class="row"><input id="tok" type="password" placeholder="github_pat_…" autocomplete="off" style="flex:1"><button id="savetok" class="pri">Salvar</button></div>
 <p id="tokst" class="small muted"></p>
 <div class="row"><button id="deltok" class="bad">Apagar chave deste aparelho</button><button id="closecfg">Fechar</button></div></dialog>
+
+<dialog id="ddel"><h2>Apagar do site</h2>
+<p class="small">Isto tira <b id="delnome"></b> do site: o link e o QR deixam de abrir para todo mundo.</p>
+<label class="small muted" for="delconf">Para confirmar, digite <b id="delpede"></b></label>
+<input id="delconf" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" style="width:100%;margin:6px 0 4px">
+<p id="delnota" class="small muted"></p>
+<div class="row"><button id="delok" class="bad" disabled>Apagar de vez</button><button id="delcancel">Cancelar</button></div></dialog>
 
 <dialog id="dqr"><h2 id="qrt">Link</h2><div id="qr"></div><div class="link" id="qrl"></div>
 <div class="row" style="margin-top:12px"><button id="copy">Copiar link</button><button id="closeqr">Fechar</button></div></dialog>
