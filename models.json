@@ -34,5 +34,25 @@
   "bytes": 30226685,
   "data": "2026-10-22T15:30:05.373936-03:00",
   "dataTexto": "22/10/2026, 15:30:05"
+ },
+ {
+  "slug": "berco-modelo-3d",
+  "projeto": "BERCO",
+  "sub": "modelo 3D",
+  "arquivo": "m/berco-modelo-3d.html",
+  "disciplinas": [
+   {
+    "label": "Load out",
+    "n": 2036
+   },
+   {
+    "label": "Construção",
+    "n": 5360
+   }
+  ],
+  "pecas": 7396,
+  "bytes": 1262858,
+  "data": "2026-10-22T19:46:02.432Z",
+  "dataTexto": "22/10/2026, 16:46:02"
  }
 ]
