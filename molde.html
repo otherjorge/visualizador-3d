@@ -80,7 +80,7 @@ async function init(){
   d.cb.onchange=async()=>{if(d.cb.checked){discOff.delete(d.key);if(!d.loaded){$('#loading').style.display='grid';try{await loadDisc(d)}catch(e){showError(e);return}$('#loading').style.display='none'}}else discOff.add(d.key);applyFilters();resize();fit()};return d});
  if(!discs.length)throw Error('Nenhuma geometria disponível na exportação.');
  // no celular, abre só até ~9 milhões de triângulos; o resto liga pela lista (lê na hora)
- let budget=PHONE?9e6:Infinity,used=0;for(const d of discs){if(used&&used+d.tri>budget){d.cb.checked=false;discOff.add(d.key);d.row.querySelector('em').textContent=d.n.toLocaleString('pt-BR')+' · ligar';continue}used+=d.tri}
+ let budget=PHONE?9e6:Infinity,used=0;for(const d of discs){if(d.el.dataset.off||used&&used+d.tri>budget){d.cb.checked=false;discOff.add(d.key);d.row.querySelector('em').textContent=d.n.toLocaleString('pt-BR')+' · ligar';continue}used+=d.tri}
  for(const d of discs)if(!discOff.has(d.key))await loadDisc(d);
  $('#disccolor').onclick=()=>{discColor=!discColor;$('#disccolor').classList.toggle('on',discColor);for(const m of meshList)m.material.color.copy(discColor?m.userData.dcolor:m.userData.base);dirty=true};
  frameBox=fullBox.clone();

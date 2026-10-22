@@ -187,7 +187,7 @@ $('#go').onclick = async () => {
     for (const a of arquivos) {
       estado('Lendo ' + a.f.name + '…'); log('Lendo ' + a.f.name + ' (' + MB(a.f.size) + ')…'); await tick();
       let fontes;
-      if (a.fmt === 'html') { fontes = lerHtml(await a.f.text(), a.f.name).map(x => ({ ...x, unit: 1, up: 'Z' })); if (fontes.length === 1 && a.label) fontes[0].label = a.label }
+      if (a.fmt === 'html') { fontes = lerHtml(await a.f.text(), a.f.name).map(x => ({ unit: 1, up: 'Z', ...x }));   /* metro, salvo se o leitor disser outra */ if (fontes.length === 1 && a.label) fontes[0].label = a.label }
       else { const src = await ler(a.f, a.fmt), p = padrao(a.fmt, src);
         fontes = [{ label: a.label || a.f.name, src, unit: $('#unid').value === 'auto' ? p.unit : +$('#unid').value, up: $('#eixo').value === 'auto' ? p.up : $('#eixo').value }] }
       for (const fo of fontes) {
@@ -197,7 +197,7 @@ $('#go').onclick = async () => {
           log(`  ${d.label}: ${fmtN(d.n)} peças · ${fmtN(d.tri)} triângulos · ${MB(d.b64.length)} · caixa ${s.x.toFixed(2)} × ${s.y.toFixed(2)} × ${s.z.toFixed(2)} m (comprimento × largura × altura)`);
           if (d.red.length) log(`  ${d.red.length} geometrias simplificadas por excesso de detalhe`, 'warn');
           if (Math.max(s.x, s.y, s.z) > 2000 || Math.max(s.x, s.y, s.z) < 0.01) log('  Tamanho estranho: confira a unidade do arquivo.', 'warn') }
-        discs.push(d); origens.push(fo.src.origem || a.f.name); await tick();
+        d.off = !!fo.off; discs.push(d); origens.push(fo.src.origem || a.f.name); await tick();
       }
     }
     const usadas = new Set();   // chave de disciplina única (dois HTMLs do navio trazem as mesmas chaves)

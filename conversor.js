@@ -257,7 +257,8 @@ const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;',
 export function montarHtml(molde, discs, meta) {
   let s = molde.split('__TITULO__').join(esc(meta.titulo)).split('__PROJETO__').join(esc(meta.projeto)).split('__SUB__').join(esc(meta.sub));
   s = s.replace('<script type="application/json" id="meta">{}</script>', () => '<script type="application/json" id="meta">' + JSON.stringify(meta).replace(/</g, '\\u003c') + '</script>');
-  const blocos = discs.map(d => `<script class="disc" type="application/octet-stream" data-k="${esc(d.key)}" data-label="${esc(d.label)}" data-n="${d.n}" data-tri="${d.tri}"${d.cor ? ` data-c="${d.cor}"` : ''}>${d.b64}</script>`).join('');
+  // data-off: a disciplina abre desligada (liga pela lista), p.ex. a 2ª configuração do berço, que se sobrepõe à 1ª
+  const blocos = discs.map(d => `<script class="disc" type="application/octet-stream" data-k="${esc(d.key)}" data-label="${esc(d.label)}" data-n="${d.n}" data-tri="${d.tri}"${d.cor ? ` data-c="${d.cor}"` : ''}${d.off ? ' data-off="1"' : ''}>${d.b64}</script>`).join('');
   return s.replace('<!--DISCIPLINAS-->', () => blocos);
 }
 
@@ -283,6 +284,39 @@ function pecasConexas(pos, ix, cor) {
 // ---------- HTML já gerado (versões antigas) -> disciplinas ----------
 const b64bytes = t => { const s = atob(t.replace(/\s+/g, '')), u = new Uint8Array(s.length); for (let i = 0; i < s.length; i++) u[i] = s.charCodeAt(i); return u };
 const abrir = u => { try { return gunzipSync(u) } catch (e) { try { return unzlibSync(u) } catch (e2) { return inflateSync(u) } } };
+const buf = u => u.buffer.slice(u.byteOffset, u.byteOffset + u.byteLength);
+// JSON literal logo depois de `marca` num script (var P=[...], RES={...}); respeita colchete dentro de texto
+function jsonDepois(t, marca) {
+  let i = t.indexOf(marca); if (i < 0) return null; i += marca.length; while (/\s/.test(t[i])) i++;
+  let dep = 0, str = false;
+  for (let j = i; j < t.length; j++) { const c = t[j];
+    if (str) { if (c === '\\') j++; else if (c === '"') str = false; continue }
+    if (c === '"') str = true; else if (c === '[' || c === '{') dep++; else if ((c === ']' || c === '}') && --dep === 0) return JSON.parse(t.slice(i, j + 1)) }
+  return null;
+}
+// formato "peças × instâncias por configuração" (berço CN-043, three r1xx embutido): var P=[{k,r,g,c,cc,mn,e,v,n,qL,tL,nmL,fL,...}]
+// v = Int16 em base64, posição = (q+32767)·e + mn (mm), triângulos soltos; tK = 12 floats por instância (rotação coluna a
+// coluna + translação), fK = 'C' na instância que só existe naquela configuração (cor cc). Cada configuração vira uma disciplina.
+function lerPecasPorConfiguracao(t, titulo) {
+  const P = jsonDepois(t, 'var P='), RES = jsonDepois(t, 'RES=') || {};
+  const GRUPO = { pil: 'Pilares', vig: 'Vigas', par: 'Parafusos e arruelas' };
+  const hex = h => { const c = parseInt(String(h).replace('#', ''), 16); return [(c >> 16) / 255, ((c >> 8) & 255) / 255, (c & 255) / 255] };
+  const nomes = x => Array.isArray(x) ? x : String(x || '').match(/'[^']*'/g)?.map(s => s.slice(1, -1)) || [];
+  const cfgs = [...new Set(P.flatMap(p => Object.keys(p).filter(k => /^q[A-Z]$/.test(k) && p[k] > 0).map(k => k[1])))];
+  return cfgs.map((k, ci) => {
+    const geos = P.map(p => { const q = new Int16Array(buf(b64bytes(p.v))), pos = new Float32Array(q.length);
+      for (let i = 0; i < q.length; i += 3) for (let j = 0; j < 3; j++) pos[i + j] = (q[i + j] + 32767) * p.e[j] + p.mn[j];
+      return { pos, idx: null } });
+    const inst = [];
+    P.forEach((p, gi) => { const n = p['q' + k] || 0; if (!n) return;
+      const tr = new Float32Array(buf(b64bytes(p['t' + k]))), nm = nomes(p['nm' + k]), so = p['f' + k] || '';
+      for (let i = 0; i < n; i++) { const a = tr.subarray(i * 12, i * 12 + 12);
+        inst.push({ name: nm[i] || p.r + ' ' + (i + 1), group: (GRUPO[p.g] || p.g || 'Peças') + '/' + p.r, color: hex(so[i] === 'C' && p.cc ? p.cc : p.c), gi,
+          mat: new THREE.Matrix4().set(a[0], a[3], a[6], a[9], a[1], a[4], a[7], a[10], a[2], a[5], a[8], a[11], 0, 0, 0, 1) }) } });
+    const r = RES[k] || {}, rot = (r.cfg || 'Configuração ' + k).toLowerCase().replace(/^berço\s*/, '').replace(/(^|\s)\S/g, c => c.toUpperCase()).replace('Loadout', 'Load out');
+    return { label: rot, unit: 0.001, off: ci > 0, src: { geos, inst, nomeGeo: P.map(p => p.r), origem: r.tit || titulo } };
+  });
+}
 // devolve [{label, src}] onde src = {geos, inst} ou {bloco}; unidade metro e Z para cima (como os HTMLs foram gerados)
 export function lerHtml(texto, nome) {
   const doc = new DOMParser().parseFromString(texto, 'text/html'), base = nome.replace(/\.html?$/i, '');
@@ -310,5 +344,7 @@ export function lerHtml(texto, nome) {
       const { geos, inst } = pecasConexas(pos, ix, cor);
       return { label: (meta.discipline || el.id).replace(/_/g, ' '), src: { geos, inst, origem: 'HTML do Codex · ' + (meta.source_publication || '') } };
     });
-  throw Error(nome + ': HTML sem geometria reconhecida (formatos aceitos: navio por disciplina, movelaria/HVAC/elétrica, Codex).');
+  const pc = [...doc.querySelectorAll('script:not([src])')].map(el => el.textContent).find(t => /\bvar P=\[\{"k":/.test(t) && /\bqL"?:|"q[A-Z]":/.test(t));
+  if (pc) return lerPecasPorConfiguracao(pc, titulo);
+  throw Error(nome + ': HTML sem geometria reconhecida (formatos aceitos: navio por disciplina, movelaria/HVAC/elétrica, Codex, berço por configuração).');
 }
