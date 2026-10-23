@@ -54,5 +54,57 @@
   "bytes": 1262858,
   "data": "2026-10-22T19:46:02.432Z",
   "dataTexto": "22/10/2026, 16:46:02"
+ },
+ {
+  "slug": "arembepe-sala-de-controle-com-cotas",
+  "projeto": "AREMBEPE",
+  "sub": "sala de controle com cotas",
+  "arquivo": "m/arembepe-sala-de-controle-com-cotas.html",
+  "disciplinas": [
+   {
+    "label": "Estrutura",
+    "n": 3
+   },
+   {
+    "label": "Leitos",
+    "n": 12
+   },
+   {
+    "label": "Suportes dos leitos",
+    "n": 62
+   },
+   {
+    "label": "Equipamentos elétricos",
+    "n": 8
+   },
+   {
+    "label": "Acessórios e jazentes",
+    "n": 3
+   },
+   {
+    "label": "Tubulação",
+    "n": 3
+   },
+   {
+    "label": "HVAC",
+    "n": 2
+   },
+   {
+    "label": "Acabamento",
+    "n": 4
+   },
+   {
+    "label": "Forro e isolamento",
+    "n": 2
+   },
+   {
+    "label": "Convés e teto",
+    "n": 3
+   }
+  ],
+  "pecas": 102,
+  "bytes": 2685195,
+  "data": "2026-10-23T14:17:38.920782-03:00",
+  "dataTexto": "23/10/2026, 14:17:38"
  }
 ]
