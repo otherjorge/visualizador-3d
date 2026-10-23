@@ -106,5 +106,33 @@
   "bytes": 2685924,
   "data": "2026-10-23T15:30:51.948432-03:00",
   "dataTexto": "23/10/2026, 15:30:51"
+ },
+ {
+  "slug": "mesa-modelo-3d",
+  "projeto": "MESA",
+  "sub": "modelo 3D",
+  "arquivo": "m/mesa-modelo-3d.html",
+  "disciplinas": [
+   {
+    "label": "Layout A · Mesa e gaveteiro central (2,10 m)",
+    "n": 75
+   },
+   {
+    "label": "Layout B · Mesa e dois gaveteiros (2,65 m)",
+    "n": 129
+   },
+   {
+    "label": "Layout C · Mesa e dois gaveteiros (2,10 m)",
+    "n": 129
+   },
+   {
+    "label": "Ambiente",
+    "n": 11
+   }
+  ],
+  "pecas": 344,
+  "bytes": 2216881,
+  "data": "2026-10-23T19:04:05.095Z",
+  "dataTexto": "23/10/2026, 16:04:05"
  }
 ]
