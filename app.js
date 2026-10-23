@@ -1,4 +1,4 @@
-// Página do Visualizador 3D: lista dos modelos publicados, conversão no aparelho e publicação no GitHub Pages.
+// Página do HTML 3D (era Visualizador 3D): lista dos modelos publicados, conversão no aparelho e publicação no GitHub Pages.
 import { formato, ler, lerHtml, bloco, padrao, montarHtml } from './conversor.js';
 
 const $ = s => document.querySelector(s), fmtN = n => n.toLocaleString('pt-BR'), MB = b => (b / 1e6).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + ' MB';
@@ -19,7 +19,7 @@ async function api(path, opt = {}) {
   return d;
 }
 if (LOCAL) {
-  $('#rodape').hidden = false; $('#rodape').textContent = 'Visualizador 3D v' + LOCAL.versao + ' · servidor deste PC';
+  $('#rodape').hidden = false; $('#rodape').textContent = 'HTML 3D v' + LOCAL.versao + ' · servidor deste PC';
   setInterval(() => api('api/ping', { method: 'POST' }).catch(() => { }), 30000);
   addEventListener('pagehide', e => navigator.sendBeacon('api/tchau', JSON.stringify({ motivo: 'pagehide', persisted: e.persisted, vis: document.visibilityState })));
 }
@@ -239,7 +239,7 @@ $('#go').onclick = async () => {
     for (const d of discs) { let k = d.key, i = 2; while (usadas.has(k)) k = d.key + '_' + i++; usadas.add(k); d.key = k }
     estado('Montando o HTML…'); await tick();
     const meta = { titulo: ($('#projeto').value || 'Modelo') + ' • ' + ($('#sub').value || '3D'), projeto: $('#projeto').value || 'MODELO', sub: $('#sub').value || 'modelo 3D',
-      origem: [...new Set(origens)].join(' + '), nota: 'Cores originais do arquivo. Convertido pelo Visualizador 3D.', gerado: new Date().toLocaleString('pt-BR') };
+      origem: [...new Set(origens)].join(' + '), nota: 'Cores originais do arquivo. Convertido pelo HTML 3D.', gerado: new Date().toLocaleString('pt-BR') };
     const html = montarHtml(molde, discs, meta), bytes = new TextEncoder().encode(html);
     gerado = { html, bytes, meta, discs: discs.map(d => ({ label: d.label, n: d.n })), pecas: discs.reduce((s, d) => s + d.n, 0) };
     const seg = ((performance.now() - t0) / 1000).toFixed(0);

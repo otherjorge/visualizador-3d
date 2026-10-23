@@ -1,4 +1,4 @@
-// Service worker do Visualizador 3D: guarda o app e os modelos no aparelho para abrir sem sinal.
+// Service worker do HTML 3D: guarda o app e os modelos no aparelho para abrir sem sinal.
 // Rede primeiro (com tempo limite) para páginas e lista, que mudam; cache primeiro para as bibliotecas, que não mudam.
 const APP = 'vis3d-app-v2', LIB = 'vis3d-lib-v1', MOD = 'vis3d-modelos';
 const SHELL = ['./', 'index.html', 'app.js', 'conversor.js', 'molde.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png', 'lib/qrcode/qrcode.js'];

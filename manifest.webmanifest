@@ -1,6 +1,6 @@
 {
- "name": "Visualizador 3D",
- "short_name": "Modelos 3D",
+ "name": "HTML 3D",
+ "short_name": "HTML 3D",
  "start_url": "./",
  "scope": "./",
  "display": "standalone",

@@ -1,4 +1,4 @@
-// Conversor do Visualizador 3D: lê STEP/IGES/BREP (OCCT), IFC (web-ifc), GLB/GLTF/OBJ/STL (three.js) e monta o HTML
+// Conversor do HTML 3D: lê STEP/IGES/BREP (OCCT), IFC (web-ifc), GLB/GLTF/OBJ/STL (three.js) e monta o HTML
 // no MESMO formato do montar_navio.py: um bloco gzip+base64 por disciplina, vértice soldado, coordenada em 16 bits na
 // caixa de cada geometria, índice 16/32 bits, instâncias com matriz. Tudo roda no navegador; nada sai do aparelho.
 import * as THREE from 'three';
