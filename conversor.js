@@ -317,6 +317,39 @@ function lerPecasPorConfiguracao(t, titulo) {
     return { label: rot, unit: 0.001, off: ci > 0, src: { geos, inst, nomeGeo: P.map(p => p.r), origem: r.tit || titulo } };
   });
 }
+// formato "projeto por layout" (HTML do Revit, Mesa R03): <script id="projectdata" type="application/json">{A:{mesh,report},B:…}
+// mesh.meshes + mesh.variants: p = Float32 xyz (metro, Z para cima), i = Uint32, c = RGBA por vértice. Cada layout vira uma
+// disciplina (o 1º ligado, os outros na lista, porque ocupam o mesmo lugar); puxador só no estilo salvo no RVT
+// (report.native_handle_style), como faz o visualizador do próprio HTML; parede, porta e piso viram a disciplina "Ambiente".
+function lerLayouts(P, titulo) {
+  const AMB = { wall: ['Paredes', 'Parede'], door: ['Porta', 'Porta'], ground: ['Piso', 'Piso'] }, I = new THREE.Matrix4();
+  const amb = { geos: [], inst: [], nomeGeo: [], origem: titulo }, out = [];
+  Object.keys(P).filter(L => P[L]?.mesh?.meshes).forEach((L, li) => {
+    const g = P[L].mesh, R = P[L].report || {}, est = R.native_handle_style, chapa = new Map((R.boards || []).map(b => [b.id, b]));
+    const src = { geos: [], inst: [], nomeGeo: [], origem: P[L].filelink || titulo };
+    for (const q of g.meshes.concat(g.variants || [])) {
+      if (q.handle_style && est && q.handle_style !== est) continue;
+      const a = AMB[q.kind]; if (a && li > 0) continue;   // o ambiente é o mesmo em todos os layouts: entra uma vez
+      const alvo = a ? amb : src, b = chapa.get(q.id);
+      const nome = b ? b.name : a ? a[1] + ' ' + q.id : q.secret_cover ? 'Tampa do compartimento' : q.handle_style ? 'Puxador' : 'Peça ' + q.id;
+      const grupo = a ? a[0] : b ? b.material : q.handle_style ? 'Puxadores' : 'Outras peças';
+      const pos = new Float32Array(buf(b64bytes(q.p))), ix = new Uint32Array(buf(b64bytes(q.i))), cor = b64bytes(q.c), porCor = new Map();
+      for (let k = 0; k < ix.length; k += 3) { const v = ix[k] * 4, h = (cor[v] << 16) | (cor[v + 1] << 8) | cor[v + 2]; let l = porCor.get(h); if (!l) porCor.set(h, l = []); l.push(k) }
+      for (const [h, tris] of porCor) {   // peça com mais de uma cor (vidro, metal): uma parte por cor
+        const loc = new Map(), usados = [], idx = new Uint32Array(tris.length * 3);
+        tris.forEach((k, t) => { for (let j = 0; j < 3; j++) { const v = ix[k + j]; let n = loc.get(v); if (n === undefined) { loc.set(v, n = usados.length); usados.push(v) } idx[t * 3 + j] = n } });
+        const p = new Float32Array(usados.length * 3); usados.forEach((v, n) => p.set(pos.subarray(3 * v, 3 * v + 3), 3 * n));
+        alvo.geos.push({ pos: p, idx }); alvo.nomeGeo.push(nome);
+        alvo.inst.push({ name: nome + (porCor.size > 1 ? ' (cor #' + h.toString(16).padStart(6, '0') + ')' : ''), group: grupo,
+          color: [(h >> 16) / 255, ((h >> 8) & 255) / 255, (h & 255) / 255], gi: alvo.geos.length - 1, mat: I });
+      }
+    }
+    const desc = P[L].images?.[0]?.label, comp = g.length ? (+g.length).toLocaleString('pt-BR', { minimumFractionDigits: 2 }) + ' m' : '';
+    out.push({ label: 'Layout ' + (g.layout || L) + (desc ? ' · ' + desc : '') + (comp ? ' (' + comp + ')' : ''), off: li > 0, src });
+  });
+  if (amb.geos.length) out.push({ label: 'Ambiente', off: true, src: amb });
+  return out;
+}
 // devolve [{label, src}] onde src = {geos, inst} ou {bloco}; unidade metro e Z para cima (como os HTMLs foram gerados)
 export function lerHtml(texto, nome) {
   const doc = new DOMParser().parseFromString(texto, 'text/html'), base = nome.replace(/\.html?$/i, '');
@@ -346,5 +379,8 @@ export function lerHtml(texto, nome) {
     });
   const pc = [...doc.querySelectorAll('script:not([src])')].map(el => el.textContent).find(t => /\bvar P=\[\{"k":/.test(t) && /\bqL"?:|"q[A-Z]":/.test(t));
   if (pc) return lerPecasPorConfiguracao(pc, titulo);
-  throw Error(nome + ': HTML sem geometria reconhecida (formatos aceitos: navio por disciplina, movelaria/HVAC/elétrica, Codex, berço por configuração).');
+  const pd = doc.getElementById('projectdata');
+  if (pd) { let P = null; try { P = JSON.parse(pd.textContent) } catch (e) { }
+    if (P && Object.values(P).some(x => x?.mesh?.meshes)) return lerLayouts(P, titulo) }
+  throw Error(nome + ': HTML sem geometria reconhecida (formatos aceitos: navio por disciplina, movelaria/HVAC/elétrica, Codex, berço por configuração, Revit por layout).');
 }
