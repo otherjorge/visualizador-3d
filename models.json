@@ -54,5 +54,57 @@
   "bytes": 1262858,
   "data": "2026-10-22T19:46:02.432Z",
   "dataTexto": "22/10/2026, 16:46:02"
+ },
+ {
+  "slug": "teste-formatos-teste-do-html-3d-23-10-apagar",
+  "projeto": "TESTE FORMATOS",
+  "sub": "teste do HTML 3D 23-10 (apagar)",
+  "arquivo": "m/teste-formatos-teste-do-html-3d-23-10-apagar.html",
+  "disciplinas": [
+   {
+    "label": "STL (peça de teste)",
+    "n": 1
+   },
+   {
+    "label": "OBJ (peça de teste)",
+    "n": 2
+   },
+   {
+    "label": "GLB (peça de teste)",
+    "n": 2
+   },
+   {
+    "label": "GLTF (peça de teste)",
+    "n": 2
+   },
+   {
+    "label": "STEP · freezer FKE630F",
+    "n": 59
+   },
+   {
+    "label": "IFC · gavetório",
+    "n": 20
+   },
+   {
+    "label": "Layout A · Mesa e gaveteiro central (2,10 m)",
+    "n": 75
+   },
+   {
+    "label": "Layout B · Mesa e dois gaveteiros (2,65 m)",
+    "n": 129
+   },
+   {
+    "label": "Layout C · Mesa e dois gaveteiros (2,10 m)",
+    "n": 129
+   },
+   {
+    "label": "Ambiente",
+    "n": 11
+   }
+  ],
+  "pecas": 430,
+  "bytes": 2236402,
+  "data": "2026-10-23T15:32:15.887Z",
+  "dataTexto": "23/10/2026, 12:32:15"
  }
 ]
