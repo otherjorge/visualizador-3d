@@ -7,7 +7,7 @@ const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;',
 const REPO = (() => { const h = location.hostname.match(/^([^.]+)\.github\.io$/i), p = location.pathname.split('/').filter(Boolean)[0];
   return h && p ? { owner: h[1], repo: p } : { owner: 'otherjorge', repo: 'visualizador-3d' } })();
 const SITE = new URL('.', location.href).href;
-// no PC (ABRIR_VISUALIZADOR.cmd) a página roda no servidor local do app: modelos do disco e publicação pelo login do gh, sem chave
+// no PC (ABRIR_HTML3D.cmd) a página roda no servidor local do app: modelos do disco e publicação pelo login do gh, sem chave
 const LOCAL = /^(127\.0\.0\.1|localhost)$/.test(location.hostname) ? await fetch('api/ola', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null) : null;
 // link e QR sempre do endereço público (é o que abre no celular)
 const PUBLICO = LOCAL ? LOCAL.publico : /\.github\.io$/i.test(location.hostname) ? SITE : 'https://' + REPO.owner + '.github.io/' + REPO.repo + '/';
@@ -249,7 +249,7 @@ $('#go').onclick = async () => {
     $('#result').classList.add('on'); $('#pub').disabled = bytes.length > 95e6; $('#pubst').textContent = temChave() ? '' : 'Para publicar, configure a chave em "Publicação".';
     estado('Pronto. Confira a prévia.'); log('Pronto em ' + seg + ' s.', 'ok');
   } catch (e) { console.error(e); estado(''); log('Erro: ' + (e.message || e), 'err');
-    if (LOCAL && !(await fetch('api/ola', { cache: 'no-store' }).then(r => r.ok, () => false))) log('O servidor do app fechou. Feche esta janela e abra de novo pelo ABRIR_VISUALIZADOR.cmd.', 'err') }
+    if (LOCAL && !(await fetch('api/ola', { cache: 'no-store' }).then(r => r.ok, () => false))) log('O servidor do app fechou. Feche esta janela e abra de novo pelo ABRIR_HTML3D.cmd.', 'err') }
   $('#go').disabled = !arquivos.length;
 };
 $('#baixar').onclick = () => { if (!gerado) return; const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([gerado.bytes], { type: 'text/html' }));
