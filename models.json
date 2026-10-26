@@ -146,12 +146,12 @@
     "n": 10
    },
    {
-    "label": "Porta x forro: batente acima do forro (4)",
-    "n": 4
+    "label": "Porta x forro: batente acima do forro (3)",
+    "n": 3
    },
    {
     "label": "Portas CV. Castelo",
-    "n": 56
+    "n": 59
    },
    {
     "label": "Anteparas CV. Castelo",
@@ -159,7 +159,7 @@
    },
    {
     "label": "Portas CV. Principal",
-    "n": 99
+    "n": 104
    },
    {
     "label": "Anteparas CV. Principal",
@@ -167,7 +167,7 @@
    },
    {
     "label": "Portas CV. Inferior",
-    "n": 54
+    "n": 56
    },
    {
     "label": "Anteparas CV. Inferior",
@@ -198,9 +198,9 @@
     "n": 1
    }
   ],
-  "pecas": 269,
-  "bytes": 866220,
-  "data": "2026-10-26T13:41:48.175084-03:00",
-  "dataTexto": "26/10/2026, 13:41:48"
+  "pecas": 278,
+  "bytes": 874798,
+  "data": "2026-10-26T17:58:33.810212-03:00",
+  "dataTexto": "26/10/2026, 17:58:33"
  }
 ]
