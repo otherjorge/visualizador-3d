@@ -134,5 +134,53 @@
   "bytes": 2216881,
   "data": "2026-10-23T19:04:05.095Z",
   "dataTexto": "23/10/2026, 16:04:05"
+ },
+ {
+  "slug": "arembepe-portas-cn-038-door-schedule-r3",
+  "projeto": "AREMBEPE",
+  "sub": "portas CN-038 (Door Schedule R3)",
+  "arquivo": "m/arembepe-portas-cn-038-door-schedule-r3.html",
+  "disciplinas": [
+   {
+    "label": "Portas CV. Castelo",
+    "n": 56
+   },
+   {
+    "label": "Anteparas CV. Castelo",
+    "n": 1
+   },
+   {
+    "label": "Portas CV. Principal",
+    "n": 99
+   },
+   {
+    "label": "Anteparas CV. Principal",
+    "n": 1
+   },
+   {
+    "label": "Portas CV. Inferior",
+    "n": 54
+   },
+   {
+    "label": "Anteparas CV. Inferior",
+    "n": 1
+   },
+   {
+    "label": "Giro CV. Castelo",
+    "n": 11
+   },
+   {
+    "label": "Giro CV. Principal",
+    "n": 19
+   },
+   {
+    "label": "Giro CV. Inferior",
+    "n": 10
+   }
+  ],
+  "pecas": 252,
+  "bytes": 790743,
+  "data": "2026-10-26T10:08:25.097761-03:00",
+  "dataTexto": "26/10/2026, 10:08:25"
  }
 ]
