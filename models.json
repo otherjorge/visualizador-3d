@@ -146,6 +146,10 @@
     "n": 10
    },
    {
+    "label": "Porta x forro: batente acima do forro (4)",
+    "n": 4
+   },
+   {
     "label": "Portas CV. Castelo",
     "n": 56
    },
@@ -180,11 +184,23 @@
    {
     "label": "Giro CV. Inferior",
     "n": 10
+   },
+   {
+    "label": "Forro CV. Castelo",
+    "n": 1
+   },
+   {
+    "label": "Forro CV. Principal",
+    "n": 1
+   },
+   {
+    "label": "Forro CV. Inferior",
+    "n": 1
    }
   ],
-  "pecas": 262,
-  "bytes": 791922,
-  "data": "2026-10-26T12:28:11.663491-03:00",
-  "dataTexto": "26/10/2026, 12:28:11"
+  "pecas": 269,
+  "bytes": 865633,
+  "data": "2026-10-26T12:49:39.090389-03:00",
+  "dataTexto": "26/10/2026, 12:49:39"
  }
 ]
