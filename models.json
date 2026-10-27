@@ -210,5 +210,29 @@
   "bytes": 877028,
   "data": "2026-10-27T11:49:07.724104-03:00",
   "dataTexto": "27/10/2026, 11:49:07"
+ },
+ {
+  "slug": "arembepe-vigias-100-graus-cn-038",
+  "projeto": "AREMBEPE",
+  "sub": "vigias 100 graus CN-038",
+  "arquivo": "m/arembepe-vigias-100-graus-cn-038.html",
+  "disciplinas": [
+   {
+    "label": "Vigias conves principal - SolidWorks",
+    "n": 10
+   },
+   {
+    "label": "Vigias castelo - proposta",
+    "n": 4
+   },
+   {
+    "label": "Sala de reuniao",
+    "n": 1
+   }
+  ],
+  "pecas": 15,
+  "bytes": 8377832,
+  "data": "2026-10-27T17:18:26.739284-03:00",
+  "dataTexto": "27/10/2026, 17:18:26"
  }
 ]
