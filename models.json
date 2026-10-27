@@ -250,5 +250,21 @@
   "bytes": 10500607,
   "data": "2026-10-27T17:20:14.388412-03:00",
   "dataTexto": "27/10/2026, 17:20:14"
+ },
+ {
+  "slug": "arembepe-luminarias-forro-cn-038",
+  "projeto": "AREMBEPE",
+  "sub": "luminarias forro CN-038",
+  "arquivo": "m/arembepe-luminarias-forro-cn-038.html",
+  "disciplinas": [
+   {
+    "label": "Luminarias de embutir no forro",
+    "n": 104
+   }
+  ],
+  "pecas": 104,
+  "bytes": 12197788,
+  "data": "2026-10-27T17:20:45.812805-03:00",
+  "dataTexto": "27/10/2026, 17:20:45"
  }
 ]
