@@ -234,5 +234,21 @@
   "bytes": 8377832,
   "data": "2026-10-27T17:18:26.739284-03:00",
   "dataTexto": "27/10/2026, 17:18:26"
+ },
+ {
+  "slug": "arembepe-toalheiros-termicos-cn-038",
+  "projeto": "AREMBEPE",
+  "sub": "toalheiros termicos CN-038",
+  "arquivo": "m/arembepe-toalheiros-termicos-cn-038.html",
+  "disciplinas": [
+   {
+    "label": "Toalheiros + camarotes (Castelo, Principal, Inferior)",
+    "n": 14
+   }
+  ],
+  "pecas": 14,
+  "bytes": 10500607,
+  "data": "2026-10-27T17:20:14.388412-03:00",
+  "dataTexto": "27/10/2026, 17:20:14"
  }
 ]
