@@ -298,5 +298,21 @@
   "bytes": 18491873,
   "data": "2026-10-27T17:21:14.638526-03:00",
   "dataTexto": "27/10/2026, 17:21:14"
+ },
+ {
+  "slug": "arembepe-recuo-forracao-frigorifica-conferencia-cn-038",
+  "projeto": "AREMBEPE",
+  "sub": "recuo forracao frigorifica conferencia CN-038",
+  "arquivo": "m/arembepe-recuo-forracao-frigorifica-conferencia-cn-038.html",
+  "disciplinas": [
+   {
+    "label": "Recuo da forracao - conferencia",
+    "n": 12
+   }
+  ],
+  "pecas": 12,
+  "bytes": 6741267,
+  "data": "2026-10-27T17:21:38.847233-03:00",
+  "dataTexto": "27/10/2026, 17:21:38"
  }
 ]
