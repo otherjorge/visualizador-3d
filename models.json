@@ -330,5 +330,21 @@
   "bytes": 5358393,
   "data": "2026-10-28T19:19:34.986897-03:00",
   "dataTexto": "28/10/2026, 19:19:34"
+ },
+ {
+  "slug": "cat-mov-001-movelaria-naval",
+  "projeto": "CAT-MOV-001",
+  "sub": "Movelaria naval",
+  "arquivo": "m/cat-mov-001-movelaria-naval.html",
+  "disciplinas": [
+   {
+    "label": "Moveis",
+    "n": 6
+   }
+  ],
+  "pecas": 6,
+  "bytes": 116744,
+  "data": "2026-10-28T19:47:38.768877-03:00",
+  "dataTexto": "28/10/2026, 19:47:38"
  }
 ]
