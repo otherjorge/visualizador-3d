@@ -386,5 +386,25 @@
   "bytes": 16370292,
   "data": "2026-10-29T15:36:24.511026-03:00",
   "dataTexto": "29/10/2026, 15:36:24"
+ },
+ {
+  "slug": "arembepe-isolamento-vistas",
+  "projeto": "AREMBEPE",
+  "sub": "isolamento-vistas",
+  "arquivo": "m/arembepe-isolamento-vistas.html",
+  "disciplinas": [
+   {
+    "label": "Vistas do plano",
+    "n": 9
+   },
+   {
+    "label": "Pinos",
+    "n": 10227
+   }
+  ],
+  "pecas": 10236,
+  "bytes": 8657057,
+  "data": "2026-10-29T16:08:10.253275-03:00",
+  "dataTexto": "29/10/2026, 16:08:10"
  }
 ]
