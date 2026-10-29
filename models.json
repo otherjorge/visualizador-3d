@@ -346,5 +346,21 @@
   "bytes": 111853,
   "data": "2026-10-28T21:17:24.491709-03:00",
   "dataTexto": "28/10/2026, 21:17:24"
+ },
+ {
+  "slug": "arembepe-isolamento-detalhes",
+  "projeto": "AREMBEPE",
+  "sub": "isolamento-detalhes",
+  "arquivo": "m/arembepe-isolamento-detalhes.html",
+  "disciplinas": [
+   {
+    "label": "Detalhes",
+    "n": 7
+   }
+  ],
+  "pecas": 7,
+  "bytes": 688063,
+  "data": "2026-10-29T15:35:36.884144-03:00",
+  "dataTexto": "29/10/2026, 15:35:36"
  }
 ]
