@@ -502,5 +502,21 @@
   "bytes": 1591275,
   "data": "2026-10-30T12:51:19.672250-03:00",
   "dataTexto": "30/10/2026, 12:51:19"
+ },
+ {
+  "slug": "arembepe-prensa-cabos-tijupa",
+  "projeto": "AREMBEPE",
+  "sub": "PRENSA CABOS TIJUPA",
+  "arquivo": "m/arembepe-prensa-cabos-tijupa.html",
+  "disciplinas": [
+   {
+    "label": "Prensa cabos + tijupa",
+    "n": 228
+   }
+  ],
+  "pecas": 228,
+  "bytes": 1601225,
+  "data": "2026-10-30T15:17:48.162066-03:00",
+  "dataTexto": "30/10/2026, 15:17:48"
  }
 ]
