@@ -22,8 +22,8 @@ button{border:0;border-radius:7px;padding:8px 10px;background:#1f5fbf;color:#fff
 <table id="t2"><tr><th>Forração / forro</th><th>Antes</th><th>Agora</th></tr></table>
 <div id="sol" style="background:#eaf6ec;border-left:4px solid #0a9a2a;padding:6px 8px;border-radius:6px;margin:6px 0"></div>
 <div class="lg" id="lg"></div>
-<div class="bt"><button id="b1">Planta</button><button id="b2">3D</button><button id="b3">Módulos transparentes</button><button id="b4" class="off">Ocultar módulos</button><button id="b5">Ocultar forro</button><button id="b6">Ver interferência</button></div></div></div>
-<div id="msg">1 dedo gira · pinça = zoom · 2 dedos movem</div>
+</div><div class="bt"><button id="b1">Planta</button><button id="b2">3D</button><button id="b3">Módulos transparentes</button><button id="b4" class="off">Ocultar módulos</button><button id="b5">Ocultar forro</button><button id="b6">Ver interferência</button></div></div>
+<div id="msg">– recolhe/abre o texto · 1 dedo gira · pinça = zoom · 2 dedos movem</div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 <script>
@@ -54,15 +54,16 @@ LIN.forEach(function(l){var v=[];l.p.forEach(function(q){v.push(new THREE.Vector
  var g=new THREE.BufferGeometry().setFromPoints(v);
  var m=l.tr?new THREE.LineDashedMaterial({color:l.cor,dashSize:60,gapSize:40,depthTest:false}):new THREE.LineBasicMaterial({color:l.cor,depthTest:false});
  var o=new THREE.Line(g,m);if(l.tr)o.computeLineDistances();o.renderOrder=5;S.add(o)});
+function rec(){if(innerWidth<600)document.getElementById('cx').style.display='none'}
 function planta(){var a=C.aspect,tv=Math.tan(Math.PI/9),d=Math.max(2700/(2*tv*a),2700/(2*tv))*(a<1?1.9:1.2),sh=a<1?d*tv*0.45:0;
  C.up.set(0,0,-1);C.position.set(200,d,-50-sh+0.01);K.target.set(200,0,-50-sh);C.lookAt(K.target);K.update()}
 function tres(){C.up.set(0,1,0);C.position.set(-2600,2600,2600);K.target.set(0,300,0);K.update()}
 planta();
-document.getElementById('b1').onclick=planta;document.getElementById('b2').onclick=tres;
+document.getElementById('b1').onclick=function(){rec();planta()};document.getElementById('b2').onclick=function(){rec();tres()};
 var tr=true;document.getElementById('b3').onclick=function(){tr=!tr;mods.forEach(function(o){o.material.opacity=tr?0.35:1;o.material.depthWrite=!tr;o.material.transparent=tr;o.material.needsUpdate=true});this.className=tr?'':'off'};
 var vis=true;document.getElementById('b4').onclick=function(){vis=!vis;mods.forEach(function(o){o.visible=vis});this.className=vis?'off':''};
 var fv=true;document.getElementById('b5').onclick=function(){fv=!fv;forro.forEach(function(o){o.visible=fv});this.className=fv?'':'off';this.textContent=fv?'Ocultar forro':'Mostrar forro'};
-document.getElementById('b6').onclick=function(){var b=CX[0];C.up.set(0,1,0);K.target.set(b.c[0]+b.d[0]/2,b.c[2]+b.d[2]/2,-b.c[1]);C.position.set(K.target.x-900,K.target.y+1400,K.target.z+2600);K.update()};
+document.getElementById('b6').onclick=function(){rec();var b=CX[0];C.up.set(0,1,0);K.target.set(b.c[0]+b.d[0]/2,b.c[2]+b.d[2]/2,-b.c[1]);C.position.set(K.target.x-900,K.target.y+1400,K.target.z+2600);K.update()};
 document.getElementById('min').onclick=function(){var x=document.getElementById('cx');x.style.display=x.style.display=='none'?'':'none'};
 R.domElement.addEventListener('webglcontextlost',function(e){e.preventDefault();msg.textContent='O celular liberou a memória do 3D — recarregue a página.'});
 window.addEventListener('resize',function(){W=el.clientWidth;H=el.clientHeight;C.aspect=W/H;C.updateProjectionMatrix();R.setSize(W,H)});
