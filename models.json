@@ -470,21 +470,5 @@
   "bytes": 5318159,
   "data": "2026-10-30T06:20:03.054991-03:00",
   "dataTexto": "30/10/2026, 06:20:03"
- },
- {
-  "slug": "teste-publicacao-v1-1-2-apagar",
-  "projeto": "TESTE",
-  "sub": "publicacao v1.1.2 apagar",
-  "arquivo": "m/teste-publicacao-v1-1-2-apagar.html",
-  "disciplinas": [
-   {
-    "label": "cubo teste",
-    "n": 1
-   }
-  ],
-  "pecas": 1,
-  "bytes": 708415,
-  "data": "2026-10-30T11:09:23.619Z",
-  "dataTexto": "30/10/2026, 08:09:23"
  }
 ]
