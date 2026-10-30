@@ -452,22 +452,6 @@
   "dataTexto": "30/10/2026, 06:20:03"
  },
  {
-  "slug": "arembepe-suportes-antenas",
-  "projeto": "AREMBEPE",
-  "sub": "suportes antenas",
-  "arquivo": "m/arembepe-suportes-antenas.html",
-  "disciplinas": [
-   {
-    "label": "Suportes antenas",
-    "n": 283
-   }
-  ],
-  "pecas": 283,
-  "bytes": 3308116,
-  "data": "2026-10-30T09:58:33.138449-03:00",
-  "dataTexto": "30/10/2026, 09:58:33"
- },
- {
   "slug": "arembepe-a1-porta-visita",
   "projeto": "AREMBEPE",
   "sub": "a1-porta-visita",
@@ -502,5 +486,21 @@
   "bytes": 8717977,
   "data": "2026-10-30T10:43:29.869696-03:00",
   "dataTexto": "30/10/2026, 10:43:29"
+ },
+ {
+  "slug": "arembepe-suportes-antenas",
+  "projeto": "AREMBEPE",
+  "sub": "suportes antenas",
+  "arquivo": "m/arembepe-suportes-antenas.html",
+  "disciplinas": [
+   {
+    "label": "Suportes antenas",
+    "n": 284
+   }
+  ],
+  "pecas": 284,
+  "bytes": 3435156,
+  "data": "2026-10-30T10:45:56.662085-03:00",
+  "dataTexto": "30/10/2026, 10:45:56"
  }
 ]
