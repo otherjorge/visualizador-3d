@@ -41,10 +41,10 @@ dialog ol{padding-left:20px;line-height:1.6}#qr svg{background:#fff;border-radiu
 <header><div><div class="eyebrow">Engenharia naval / modelos 3D</div><h1>HTML 3D</h1></div>
 <div class="row"><span id="net" class="badge">ONLINE</span><button id="cfg" title="Configurar publicação">Publicação</button></div></header>
 <main>
-<section><div class="row" style="justify-content:space-between"><h2 style="margin:0">Modelos publicados</h2><button id="reload">Atualizar lista</button></div>
-<p class="muted small" id="dica">Toque em <b>Abrir</b> para ver o modelo. <b>Guardar offline</b> deixa o modelo neste aparelho para abrir sem sinal.</p>
-<div id="desfazer" class="desfazer row" hidden></div>
-<div id="lista" class="list"><p class="muted">Carregando…</p></div></section>
+<section><div class="row" style="justify-content:space-between"><h2 style="margin:0">Modelos publicados</h2><div class="row"><button id="reload" hidden>Atualizar lista</button><button id="verlista" aria-expanded="false" aria-controls="caixalista">Ver modelos publicados</button></div></div>
+<div id="caixalista" hidden><p class="muted small" id="dica">Toque em <b>Abrir</b> para ver o modelo. <b>Guardar offline</b> deixa o modelo neste aparelho para abrir sem sinal.</p>
+<div id="lista" class="list"><p class="muted">Carregando…</p></div></div>
+<div id="desfazer" class="desfazer row" hidden></div></section>
 
 <section id="conv"><h2>Converter e publicar</h2>
 <div id="drop" class="drop" tabindex="0" role="button">Solte aqui os arquivos ou toque para escolher<br><span class="small">STEP · IGES · BREP · IFC · STL · OBJ · GLB · GLTF · HTML já gerado (navio, movelaria, HVAC, elétrica, Codex, Revit)<br>Cada arquivo vira uma disciplina, que pode ser ligada e desligada no visualizador.</span></div>

@@ -71,6 +71,12 @@ async function renderLista() {
   })));
 }
 $('#reload').onclick = carregarLista;
+// a lista vem fechada e só aparece quando pedida (Jorge 30/10: "quero só ver se eu pedir pra ver a lista")
+$('#verlista').onclick = () => {
+  const abre = $('#caixalista').hidden;
+  $('#caixalista').hidden = $('#reload').hidden = !abre;
+  $('#verlista').textContent = abre ? 'Fechar lista' : 'Ver modelos publicados'; $('#verlista').setAttribute('aria-expanded', abre);
+};
 
 // ---------- QR ----------
 function mostrarQr(titulo, url) {
