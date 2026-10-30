@@ -406,5 +406,69 @@
   "bytes": 8657057,
   "data": "2026-10-29T16:08:10.253275-03:00",
   "dataTexto": "29/10/2026, 16:08:10"
+ },
+ {
+  "slug": "arembepe-acabamento-por-grupo",
+  "projeto": "AREMBEPE",
+  "sub": "acabamento por grupo",
+  "arquivo": "m/arembepe-acabamento-por-grupo.html",
+  "disciplinas": [
+   {
+    "label": "Vigias",
+    "n": 15
+   },
+   {
+    "label": "Toalheiros",
+    "n": 14
+   },
+   {
+    "label": "Portas",
+    "n": 40
+   },
+   {
+    "label": "Luminarias",
+    "n": 104
+   },
+   {
+    "label": "Cozinha",
+    "n": 1554
+   },
+   {
+    "label": "Movelaria",
+    "n": 149
+   },
+   {
+    "label": "Banheiros",
+    "n": 12
+   },
+   {
+    "label": "ROV",
+    "n": 14
+   },
+   {
+    "label": "Forracao",
+    "n": 4
+   },
+   {
+    "label": "Forro",
+    "n": 4
+   },
+   {
+    "label": "Piso",
+    "n": 8
+   },
+   {
+    "label": "Isolamento",
+    "n": 4
+   },
+   {
+    "label": "Corrimao",
+    "n": 3
+   }
+  ],
+  "pecas": 1925,
+  "bytes": 5318159,
+  "data": "2026-10-30T06:20:03.054991-03:00",
+  "dataTexto": "30/10/2026, 06:20:03"
  }
 ]
