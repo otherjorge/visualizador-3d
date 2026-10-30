@@ -468,6 +468,22 @@
   "dataTexto": "30/10/2026, 10:37:00"
  },
  {
+  "slug": "arembepe-suportes-antenas",
+  "projeto": "AREMBEPE",
+  "sub": "suportes antenas",
+  "arquivo": "m/arembepe-suportes-antenas.html",
+  "disciplinas": [
+   {
+    "label": "Suportes antenas",
+    "n": 284
+   }
+  ],
+  "pecas": 284,
+  "bytes": 3435156,
+  "data": "2026-10-30T10:45:56.662085-03:00",
+  "dataTexto": "30/10/2026, 10:45:56"
+ },
+ {
   "slug": "arembepe-isolamento-vistas",
   "projeto": "AREMBEPE",
   "sub": "isolamento-vistas",
@@ -483,24 +499,8 @@
    }
   ],
   "pecas": 12109,
-  "bytes": 8717977,
-  "data": "2026-10-30T10:43:29.869696-03:00",
-  "dataTexto": "30/10/2026, 10:43:29"
- },
- {
-  "slug": "arembepe-suportes-antenas",
-  "projeto": "AREMBEPE",
-  "sub": "suportes antenas",
-  "arquivo": "m/arembepe-suportes-antenas.html",
-  "disciplinas": [
-   {
-    "label": "Suportes antenas",
-    "n": 284
-   }
-  ],
-  "pecas": 284,
-  "bytes": 3435156,
-  "data": "2026-10-30T10:45:56.662085-03:00",
-  "dataTexto": "30/10/2026, 10:45:56"
+  "bytes": 8718510,
+  "data": "2026-10-30T11:10:36.466747-03:00",
+  "dataTexto": "30/10/2026, 11:10:36"
  }
 ]

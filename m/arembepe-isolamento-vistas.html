@@ -71,8 +71,12 @@ S.add(new THREE.HemisphereLight(0xffffff,0x8899aa,0.9));
 const sol=new THREE.DirectionalLight(0xffffff,0.7);sol.position.set(2,-3,4);S.add(sol);
 const sol2=new THREE.DirectionalLight(0xffffff,0.45);sol2.position.set(-3,2,-4);S.add(sol2);
 // ---------------------------------------------------------------- materiais e malhas (criadas só quando a vista pede)
-const mE=new THREE.MeshPhongMaterial({color:0x8a929c,flatShading:true,shininess:10,side:THREE.DoubleSide});
-const mI={};const matI=c=>mI[c]||(mI[c]=new THREE.MeshPhongMaterial({color:c,flatShading:true,shininess:4,side:THREE.DoubleSide}));
+/* face no mesmo plano (lã encostada na chapa, cola sob a lã, A-60 sobre térmico) pisca: quem fica atrás e quem fica na frente
+   é fixo pelo deslocamento de profundidade (Jorge 30/10: "interferências de face, fica dando dupla face") */
+const desloca=(m,f,u)=>{m.polygonOffset=true;m.polygonOffsetFactor=f;m.polygonOffsetUnits=u;return m};
+const mE=desloca(new THREE.MeshPhongMaterial({color:0x8a929c,flatShading:true,shininess:10,side:THREE.DoubleSide}),2,8);
+const mI={};const matI=c=>mI[c]||(mI[c]=desloca(new THREE.MeshPhongMaterial({color:c,flatShading:true,shininess:4,side:THREE.DoubleSide}),
+ c===0xdb4d47?-1:0,c===0xdb4d47?-4:0));
 const cache=[];
 function malha(i){if(cache[i])return cache[i];const m=H.mal[i],g=new THREE.BufferGeometry();
  g.setAttribute('position',new THREE.BufferAttribute(new Uint16Array(AB,m.vo,m.vn*3),3,true));
@@ -104,6 +108,7 @@ const mCola=new THREE.MeshPhongMaterial({color:0xe6d8a4,shininess:4}),mAlu=new T
  mCobre=new THREE.MeshPhongMaterial({color:0xc27a4c,specular:0x9a6440,shininess:90}),
  mGalv=new THREE.MeshPhongMaterial({color:0xd9dde2,specular:0x888888,shininess:70}),
  mCap=new THREE.MeshPhongMaterial({color:0xffffff,specular:0x3a3a3a,shininess:45});
+desloca(mCola,2,8);const mBase=desloca(mAlu.clone(),2,8),mPe=desloca(mCobre.clone(),2,8);   /* colados na chapa: atrás da lã */
 const COR_L={33:0xf9cc1a,63:0xee5410,113:0x2666e6},COR_M=[0xc9ced4,0xc27a4c],COR_E={50:'#db4d47',25:'#99d98c',75:'#4dad59',100:'#1f7a38'};
 const MATN=['B.50×50 Ø3,0 alumínio colado','CD-NT Ø3,4 cobreado'];
 const LA={25:'térmica 25 mm · 45 kg/m³',50:'A-60 50 mm · 128 kg/m³',75:'térmica 75 mm · 45 kg/m³',100:'térmica 100 mm · 45 kg/m³'};
@@ -115,7 +120,7 @@ function montaPinos(){pins.forEach(o=>{S.remove(o);o.dispose()});pins=[];sel=[];
  for(let i=0;i<N;i++)if(naVista(i)&&!offL[pL[i]]&&!offE[pEsp[i]])sel.push(i);
  const n=sel.length;alvoPin=[];if(!n){pede();return}
  const nQ=sel.reduce((a,i)=>a+(pMat[i]===0),0),nq=Math.max(nQ,1),nC=Math.max(n-nQ,1),IM=(g,m,k)=>new THREE.InstancedMesh(g,m,k);
- const cola=IM(gCola,mCola,nq),bQ=IM(gBQ,mAlu,nq),hQ=IM(gHQ,mAlu,nq),pe=IM(gPe,mCobre,nC),hC=IM(gHC,mCobre,nC),a=IM(gA,mGalv,n),c=IM(gC,mCap,n);
+ const cola=IM(gCola,mCola,nq),bQ=IM(gBQ,mBase,nq),hQ=IM(gHQ,mAlu,nq),pe=IM(gPe,mPe,nC),hC=IM(gHC,mCobre,nC),a=IM(gA,mGalv,n),c=IM(gC,mCap,n);
  let iq=0,ic=0;
  sel.forEach((i,j)=>{_d.set(pDir[3*i],pDir[3*i+1],pDir[3*i+2]).normalize();_q.setFromUnitVectors(Y,_d);_p.fromArray(pPos,3*i);
   const e=pEsp[i]/1000;_s.set(K,K,K);_m.compose(_p,_q,_s);
@@ -140,7 +145,7 @@ function vai(i,modo){vi=i;V=H.vistas[i];document.querySelectorAll('#gv button').
 // ---------------------------------------------------------------- câmera
 let alvo=new THREE.Vector3(),raio=30,th=-Math.PI/2,ph=1.2,iniciado=false;
 function cam(){CAM.position.set(alvo.x+raio*Math.sin(ph)*Math.cos(th),alvo.y+raio*Math.sin(ph)*Math.sin(th),alvo.z+raio*Math.cos(ph));CAM.up.set(0,0,1);CAM.lookAt(alvo);
- CAM.near=Math.max(.004,raio/1500);CAM.far=raio*20+150;CAM.updateProjectionMatrix();pede()}
+ CAM.near=Math.max(.004,raio/600);CAM.far=raio*20+150;CAM.updateProjectionMatrix();pede()}
 function enquadra(modo){const b=V.box,dx=b[3]-b[0],dy=b[4]-b[1],dz=b[5]-b[2],t=Math.tan(CAM.fov*Math.PI/360),asp=CAM.aspect||1;let w,h,ex;
  alvo.set((b[0]+b[3])/2,(b[1]+b[4])/2,(b[2]+b[5])/2);
  if(modo==='cima'||modo==='baixo'){th=-Math.PI/2;ph=modo==='cima'?.03:Math.PI-.03;w=dx;h=dy;ex=dz/2}
