@@ -470,5 +470,21 @@
   "bytes": 5318159,
   "data": "2026-10-30T06:20:03.054991-03:00",
   "dataTexto": "30/10/2026, 06:20:03"
+ },
+ {
+  "slug": "arembepe-suportes-antenas",
+  "projeto": "AREMBEPE",
+  "sub": "suportes antenas",
+  "arquivo": "m/arembepe-suportes-antenas.html",
+  "disciplinas": [
+   {
+    "label": "Suportes antenas",
+    "n": 283
+   }
+  ],
+  "pecas": 283,
+  "bytes": 3308116,
+  "data": "2026-10-30T09:58:33.138449-03:00",
+  "dataTexto": "30/10/2026, 09:58:33"
  }
 ]
