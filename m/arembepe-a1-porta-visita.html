@@ -48,7 +48,8 @@ LIN.forEach(function(l){var v=[];l.p.forEach(function(q){v.push(new THREE.Vector
  var g=new THREE.BufferGeometry().setFromPoints(v);
  var m=l.tr?new THREE.LineDashedMaterial({color:l.cor,dashSize:60,gapSize:40,depthTest:false}):new THREE.LineBasicMaterial({color:l.cor,depthTest:false});
  var o=new THREE.Line(g,m);if(l.tr)o.computeLineDistances();o.renderOrder=5;S.add(o)});
-function planta(){C.up.set(0,0,-1);C.position.set(0,5200,0.01);K.target.set(0,0,0);C.lookAt(0,0,0);K.update()}
+function planta(){var a=C.aspect,tv=Math.tan(Math.PI/9),d=Math.max(2700/(2*tv*a),2700/(2*tv))*(a<1?1.9:1.2),sh=a<1?d*tv*0.45:0;
+ C.up.set(0,0,-1);C.position.set(200,d,-50-sh+0.01);K.target.set(200,0,-50-sh);C.lookAt(K.target);K.update()}
 function tres(){C.up.set(0,1,0);C.position.set(-2600,2600,2600);K.target.set(0,300,0);K.update()}
 planta();
 document.getElementById('b1').onclick=planta;document.getElementById('b2').onclick=tres;
