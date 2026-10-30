@@ -388,26 +388,6 @@
   "dataTexto": "29/10/2026, 15:36:24"
  },
  {
-  "slug": "arembepe-isolamento-vistas",
-  "projeto": "AREMBEPE",
-  "sub": "isolamento-vistas",
-  "arquivo": "m/arembepe-isolamento-vistas.html",
-  "disciplinas": [
-   {
-    "label": "Vistas do plano",
-    "n": 9
-   },
-   {
-    "label": "Pinos",
-    "n": 10227
-   }
-  ],
-  "pecas": 10236,
-  "bytes": 8657057,
-  "data": "2026-10-29T16:08:10.253275-03:00",
-  "dataTexto": "29/10/2026, 16:08:10"
- },
- {
   "slug": "arembepe-acabamento-por-grupo",
   "projeto": "AREMBEPE",
   "sub": "acabamento por grupo",
@@ -502,5 +482,25 @@
   "bytes": 4257583,
   "data": "2026-10-30T10:37:00.920631-03:00",
   "dataTexto": "30/10/2026, 10:37:00"
+ },
+ {
+  "slug": "arembepe-isolamento-vistas",
+  "projeto": "AREMBEPE",
+  "sub": "isolamento-vistas",
+  "arquivo": "m/arembepe-isolamento-vistas.html",
+  "disciplinas": [
+   {
+    "label": "Vistas do plano",
+    "n": 9
+   },
+   {
+    "label": "Pinos",
+    "n": 12100
+   }
+  ],
+  "pecas": 12109,
+  "bytes": 8717977,
+  "data": "2026-10-30T10:43:29.869696-03:00",
+  "dataTexto": "30/10/2026, 10:43:29"
  }
 ]
