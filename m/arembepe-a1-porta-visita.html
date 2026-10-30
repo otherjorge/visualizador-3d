@@ -48,7 +48,7 @@ CAM.forEach(function(c){var a=b64(c.d),p=new Float32Array(a.length),eh=c.k.index
  var g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(p,3));g.computeVertexNormals();
  var tp=eh||fo||fc,m=new THREE.MeshLambertMaterial({color:c.cor,side:THREE.DoubleSide,transparent:tp,opacity:eh?0.35:fo?0.3:fc?0.75:1,depthWrite:!tp});
  var o=new THREE.Mesh(g,m);S.add(o);if(eh)mods.push(o);if(fo)forro.push(o)});
-var cxs=[];CX.forEach(function(b){var g=new THREE.BoxGeometry(b.d[0],b.d[2],b.d[1]);var o=new THREE.Mesh(g,new THREE.MeshBasicMaterial({color:b.cor,transparent:true,opacity:0.85,depthTest:false}));o.renderOrder=6;
+var cxs=[];CX.forEach(function(b){var g=new THREE.BoxGeometry(b.d[0],b.d[2],b.d[1]);var o=new THREE.Mesh(g,new THREE.MeshBasicMaterial({color:b.cor,transparent:true,opacity:0.6,depthTest:false}));o.renderOrder=6;
  o.position.set(b.c[0]+b.d[0]/2,b.c[2]+b.d[2]/2,-(b.c[1]+b.d[1]/2));S.add(o);cxs.push(o);var e=new THREE.LineSegments(new THREE.EdgesGeometry(g),new THREE.LineBasicMaterial({color:0x900000,depthTest:false}));e.renderOrder=7;e.position.copy(o.position);S.add(e)});
 LIN.forEach(function(l){var v=[];l.p.forEach(function(q){v.push(new THREE.Vector3(q[0],l.z,-q[1]))});
  var g=new THREE.BufferGeometry().setFromPoints(v);
@@ -63,7 +63,7 @@ document.getElementById('b1').onclick=function(){rec();planta()};document.getEle
 var tr=true;document.getElementById('b3').onclick=function(){tr=!tr;mods.forEach(function(o){o.material.opacity=tr?0.35:1;o.material.depthWrite=!tr;o.material.transparent=tr;o.material.needsUpdate=true});this.className=tr?'':'off'};
 var vis=true;document.getElementById('b4').onclick=function(){vis=!vis;mods.forEach(function(o){o.visible=vis});this.className=vis?'off':''};
 var fv=true;document.getElementById('b5').onclick=function(){fv=!fv;forro.forEach(function(o){o.visible=fv});this.className=fv?'':'off';this.textContent=fv?'Ocultar forro':'Mostrar forro'};
-document.getElementById('b6').onclick=function(){rec();var b=CX[0];C.up.set(0,1,0);K.target.set(b.c[0]+b.d[0]/2,b.c[2]+b.d[2]/2,-b.c[1]);C.position.set(K.target.x-900,K.target.y+1400,K.target.z+2600);K.update()};
+document.getElementById('b6').onclick=function(){rec();var b=CX[0];C.up.set(0,1,0);K.target.set(b.c[0]+b.d[0]/2,b.c[2]+b.d[2]/2,-b.c[1]);var f=C.aspect<1?2.6:1.3;C.position.set(K.target.x-900*f,K.target.y+1400*f,K.target.z+2600*f);K.update()};
 document.getElementById('min').onclick=function(){var x=document.getElementById('cx');x.style.display=x.style.display=='none'?'':'none'};
 R.domElement.addEventListener('webglcontextlost',function(e){e.preventDefault();msg.textContent='O celular liberou a memória do 3D — recarregue a página.'});
 window.addEventListener('resize',function(){W=el.clientWidth;H=el.clientHeight;C.aspect=W/H;C.updateProjectionMatrix();R.setSize(W,H)});
