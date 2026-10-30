@@ -486,5 +486,21 @@
   "bytes": 3308116,
   "data": "2026-10-30T09:58:33.138449-03:00",
   "dataTexto": "30/10/2026, 09:58:33"
+ },
+ {
+  "slug": "arembepe-a1-porta-visita",
+  "projeto": "AREMBEPE",
+  "sub": "a1-porta-visita",
+  "arquivo": "m/arembepe-a1-porta-visita.html",
+  "disciplinas": [
+   {
+    "label": "Acabamento",
+    "n": 1
+   }
+  ],
+  "pecas": 1,
+  "bytes": 4243804,
+  "data": "2026-10-30T10:21:22.064027-03:00",
+  "dataTexto": "30/10/2026, 10:21:22"
  }
 ]
