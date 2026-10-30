@@ -5,7 +5,7 @@
 <style>
 html,body{margin:0;height:100%;background:#eef1f4;font-family:-apple-system,Segoe UI,Arial,sans-serif;color:#1b2430;overflow:hidden}
 #v{position:fixed;left:0;top:0;width:100%;height:100vh;height:100dvh}
-#p{position:fixed;left:8px;top:8px;right:8px;max-width:460px;background:rgba(255,255,255,.94);border-radius:10px;padding:10px 12px;box-shadow:0 2px 10px rgba(0,0,0,.18);font-size:13px}
+#p{max-height:88vh;overflow:auto;position:fixed;left:8px;top:8px;right:8px;max-width:460px;background:rgba(255,255,255,.94);border-radius:10px;padding:10px 12px;box-shadow:0 2px 10px rgba(0,0,0,.18);font-size:13px}
 #p h1{font-size:15px;margin:0 32px 6px 0}
 table{border-collapse:collapse;width:100%;margin:6px 0}td,th{padding:3px 4px;border-bottom:1px solid #dde2e8;text-align:left}
 th{font-size:11px;color:#5b6675}.ok{color:#0a7a22;font-weight:700}.bt{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
@@ -16,13 +16,13 @@ button{border:0;border-radius:7px;padding:8px 10px;background:#1f5fbf;color:#fff
 </style></head><body>
 <noscript><p style="padding:20px">Este 3D precisa de JavaScript. No iPhone abra pelo LINK no Safari (a pré-visualização do WhatsApp/E-mail/Arquivos não executa).</p></noscript>
 <div id="v"></div>
-<div id="p"><button id="min">–</button><h1>CN-038 · Conv. inferior · A-1 × porta de visita · forração · pé de carneiro</h1>
+<div id="p"><button id="min">–</button><h1>CN-038 · Conv. inferior · A-1 × porta de visita · forração · pé de carneiro</h1><div class="bt"><button id="b1">Planta</button><button id="b2">3D</button><button id="b3">Módulos transparentes</button><button id="b4" class="off">Ocultar módulos</button><button id="b5">Ocultar forro</button><button id="b6">Ver interferência</button><button id="b7">Ver pé de carneiro</button></div>
 <div id="cx"><div>A-1 e os 6 PADs dele deslocados <b>50 mm para BORESTE</b>. Os outros módulos não mexeram.</div>
 <table id="t"><tr><th>Porta de visita</th><th>Antes</th><th>Agora</th></tr></table>
 <table id="t2"><tr><th>Forração / forro / pé de carneiro</th><th>Antes</th><th>Agora</th></tr></table>
 <div id="sol" style="background:#eaf6ec;border-left:4px solid #0a9a2a;padding:6px 8px;border-radius:6px;margin:6px 0"></div>
 <div class="lg" id="lg"></div>
-</div><div class="bt"><button id="b1">Planta</button><button id="b2">3D</button><button id="b3">Módulos transparentes</button><button id="b4" class="off">Ocultar módulos</button><button id="b5">Ocultar forro</button><button id="b6">Ver interferência</button><button id="b7">Ver pé de carneiro</button></div></div>
+</div></div>
 <div id="msg">– recolhe/abre o texto · 1 dedo gira · pinça = zoom · 2 dedos movem</div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
