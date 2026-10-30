@@ -350,6 +350,40 @@ function lerLayouts(P, titulo) {
   if (amb.geos.length) out.push({ label: 'Ambiente', off: true, src: amb });
   return out;
 }
+
+// ---------- HTML com interface própria (v1.2) ----------
+// Jorge 30/10: "se ele já tiver uma interface criada por outra pessoa mantenha a interface e só mude o tipo de acesso ao
+// link". O HTML sai como veio e só ganha o link e o QR. Todo HTML abre sem login no Chrome, Safari, Edge e Firefox.
+// O texto é lido no charset que o próprio arquivo declara (HTML antigo em windows-1252 não perde o acento).
+export async function textoHtml(arq) {
+  const u8 = new Uint8Array(await arq.arrayBuffer()), cab = new TextDecoder('latin1').decode(u8.subarray(0, 4096));
+  const cs = (cab.match(/<meta[^>]+charset\s*=\s*["']?([\w-]+)/i) || [, 'utf-8'])[1];
+  try { return new TextDecoder(cs).decode(u8) } catch (e) { return new TextDecoder().decode(u8) }
+}
+// HTML do próprio HTML 3D (blocos script.disc + meta) sai cru: o código é nosso e o "Guardar offline" dele precisa do
+// service worker do site. O resto roda num quadro isolado (sandbox sem allow-same-origin): a interface fica igual, mas o
+// código dele não lê o site nem a chave do GitHub guardada no aparelho. Recurso que pede o endereço do site (guardar
+// preferência no aparelho, service worker) não funciona dentro do quadro: foi a troca aceita pelo Jorge (30/10).
+// srcdoc em atributo: sem script na página de fora; no atributo entre aspas só & e " precisam de escape.
+export function manterInterface(texto, meta) {
+  if (/<meta name="html3d" content="interface-original">/.test(texto.slice(0, 2000))) return { html: texto, isolado: true };   // já embrulhado antes
+  const doc = new DOMParser().parseFromString(texto, 'text/html');
+  if (doc.querySelector('script.disc') && doc.getElementById('meta')) return { html: texto, isolado: false };
+  const titulo = (doc.querySelector('title')?.textContent || '').trim() || meta.titulo;
+  const html = `<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="html3d" content="interface-original">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="html3d-origem" content="${esc(meta.projeto + ' / ' + meta.sub + ' · ' + meta.origem + ' · publicado pelo HTML 3D em ' + meta.gerado)}">
+<title>${esc(titulo)}</title>
+<style>html,body{margin:0;height:100%;overflow:hidden;background:#000}iframe{position:fixed;top:0;left:0;width:100%;height:100%;border:0;display:block}</style>
+</head><body>
+<iframe title="${esc(titulo)}" sandbox="allow-scripts allow-forms allow-modals allow-popups allow-popups-to-escape-sandbox allow-downloads allow-pointer-lock" allow="fullscreen; xr-spatial-tracking" allowfullscreen srcdoc="${texto.replace(/&/g, '&amp;').replace(/"/g, '&quot;')}"></iframe>
+</body></html>
+`;
+  return { html, isolado: true };
+}
+
 // devolve [{label, src}] onde src = {geos, inst} ou {bloco}; unidade metro e Z para cima (como os HTMLs foram gerados)
 export function lerHtml(texto, nome) {
   const doc = new DOMParser().parseFromString(texto, 'text/html'), base = nome.replace(/\.html?$/i, '');

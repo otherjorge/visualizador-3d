@@ -1,5 +1,5 @@
 // Página do HTML 3D (era Visualizador 3D): lista dos modelos publicados, conversão no aparelho e publicação no GitHub Pages.
-import { formato, ler, lerHtml, bloco, padrao, montarHtml } from './conversor.js';
+import { formato, ler, lerHtml, bloco, padrao, montarHtml, textoHtml, manterInterface } from './conversor.js';
 
 const $ = s => document.querySelector(s), fmtN = n => n.toLocaleString('pt-BR'), MB = b => (b / 1e6).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + ' MB';
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -56,7 +56,7 @@ async function renderLista() {
     const url = new URL(m.arquivo, SEMCLONE ? PUBLICO : SITE).href, off = !LOCAL && await emCache(url), c = document.createElement('div'); c.className = 'card';
     // no PC o modelo já está no disco (clone do site): sem botão de guardar
     c.innerHTML = `<b>${esc(m.projeto)} <span class="muted" style="font-weight:400">/ ${esc(m.sub)}</span></b>
-      <div class="meta">${esc((m.disciplinas || []).map(d => d.label).join(' · '))}<br>${fmtN(m.pecas || 0)} peças · ${MB(m.bytes || 0)} · ${esc(m.dataTexto || m.data || '')}${off ? '<br><span class="ok">✓ guardado neste aparelho (abre sem sinal)</span>' : LOCAL && !SEMCLONE ? '<br><span class="ok">✓ no disco deste PC (abre sem internet)</span>' : ''}</div>
+      <div class="meta">${esc((m.disciplinas || []).map(d => d.label).join(' · '))}<br>${m.interface ? 'interface original' : fmtN(m.pecas || 0) + ' peças'} ·${MB(m.bytes || 0)} · ${esc(m.dataTexto || m.data || '')}${off ? '<br><span class="ok">✓ guardado neste aparelho (abre sem sinal)</span>' : LOCAL && !SEMCLONE ? '<br><span class="ok">✓ no disco deste PC (abre sem internet)</span>' : ''}</div>
       <div class="row"><a class="btn" href="${esc(SEMCLONE ? url : m.arquivo)}"${SEMCLONE ? ' target="_blank" rel="noopener"' : ''}>Abrir</a><button data-a="qr">Link / QR</button>${LOCAL ? '' : `<button data-a="off">${off ? 'Tirar do aparelho' : 'Guardar offline'}</button>`}<button data-a="del" class="bad" title="Apagar do site">Apagar</button></div>`;
     c.querySelector('[data-a=qr]').onclick = () => mostrarQr(m.projeto + ' / ' + m.sub, new URL(m.arquivo, PUBLICO).href);
     const bo = c.querySelector('[data-a=off]');
@@ -223,11 +223,14 @@ function addArquivos(lista) {
   }
   renderArquivos();
 }
+const manterHtml = () => arquivos.some(a => a.fmt === 'html') && !$('#converter').checked;
+$('#converter').onchange = () => renderArquivos();
 function renderArquivos() {
   const box = $('#files'); box.replaceChildren();
+  $('#convhtml').hidden = !arquivos.some(a => a.fmt === 'html');
   arquivos.forEach((a, i) => {
     const r = document.createElement('div'); r.className = 'file';
-    r.innerHTML = `<div><div class="nm">${esc(a.f.name)}</div><div class="fmt">${a.fmt.toUpperCase()} · ${MB(a.f.size)}${a.fmt === 'html' ? ' · disciplinas do próprio HTML' : ''}</div></div>
+    r.innerHTML = `<div><div class="nm">${esc(a.f.name)}</div><div class="fmt">${a.fmt.toUpperCase()} · ${MB(a.f.size)}${a.fmt === 'html' ? (manterHtml() ? ' · interface do próprio HTML (só ganha link e QR)' : ' · disciplinas do próprio HTML') : ''}</div></div>
       <input type="text" value="${esc(a.label)}" aria-label="Nome da disciplina" ${a.fmt === 'html' ? 'placeholder="(nomes do HTML)"' : ''}><button class="bad" aria-label="Tirar arquivo">✕</button>`;
     r.querySelector('input').oninput = e => { a.label = e.target.value };
     r.querySelector('button').onclick = () => { arquivos.splice(i, 1); renderArquivos() };
@@ -243,10 +246,28 @@ drop.ondragover = e => { e.preventDefault(); drop.classList.add('on') }; drop.on
 drop.ondrop = e => { e.preventDefault(); drop.classList.remove('on'); addArquivos(e.dataTransfer.files) };
 
 const tick = () => new Promise(r => setTimeout(r, 30));
+const metaDe = (origem, nota) => ({ titulo: ($('#projeto').value || 'Modelo') + ' • ' + ($('#sub').value || '3D'), projeto: $('#projeto').value || 'MODELO', sub: $('#sub').value || 'modelo 3D',
+  origem, nota, gerado: new Date().toLocaleString('pt-BR') });
+function pronto(g, t0, oque) {   // g = {html, meta, discs, pecas, interface?}: resumo, prévia e botão de publicar
+  const bytes = g.bytes = new TextEncoder().encode(g.html), seg = ((performance.now() - t0) / 1000).toFixed(0); gerado = g;
+  $('#resumo').innerHTML = `<b>${esc(g.meta.projeto)} / ${esc(g.meta.sub)}</b> · ${oque} · <b>${MB(bytes.length)}</b> · ${seg} s` +
+    (bytes.length > 95e6 ? '<br><span class="err">Passa de 95 MB: o GitHub não aceita. Use qualidade Leve ou separe as disciplinas.</span>' : bytes.length > 40e6 ? '<br><span class="warn">Arquivo grande: no iPhone pode demorar ou faltar memória. A qualidade Leve ajuda.</span>' : '');
+  const old = $('#prev').src; $('#prev').src = URL.createObjectURL(new Blob([bytes], { type: 'text/html' })); if (old.startsWith('blob:')) URL.revokeObjectURL(old);
+  $('#result').classList.add('on'); $('#pub').disabled = bytes.length > 95e6; $('#pubst').textContent = temChave() ? '' : 'Para publicar, configure a chave em "Publicação".';
+  estado('Pronto. Confira a prévia.'); log('Pronto em ' + seg + ' s.', 'ok');
+}
 $('#go').onclick = async () => {
   $('#go').disabled = true; $('#result').classList.remove('on'); $('#log').replaceChildren(); gerado = null;
   const t0 = performance.now(), discs = [], qual = $('#qual').value, origens = [];
   try {
+    if (manterHtml()) {   /* HTML com interface própria (v1.2): sai como veio, só ganha link e QR */
+      if (arquivos.length > 1) throw Error('HTML com interface própria é publicado sozinho: tire os outros arquivos, ou marque "Converter o HTML para a tela do HTML 3D".');
+      const a = arquivos[0]; estado('Lendo ' + a.f.name + '…'); log('Lendo ' + a.f.name + ' (' + MB(a.f.size) + ')…'); await tick();
+      const meta = metaDe(a.f.name, 'Interface original do arquivo, mantida pelo HTML 3D.'), r = manterInterface(await textoHtml(a.f), meta);
+      log(r.isolado ? '  Interface mantida, num quadro isolado: o código do arquivo não alcança o site nem a chave do GitHub do aparelho.' : '  Interface mantida como veio (HTML gerado pelo próprio HTML 3D).', 'ok');
+      pronto({ html: r.html, meta, discs: [], pecas: 0, interface: 'original' }, t0, 'interface original');
+      $('#go').disabled = !arquivos.length; return;
+    }
     const molde = await (await fetch('molde.html')).text();
     let k = 0;
     for (const a of arquivos) {
@@ -268,16 +289,8 @@ $('#go').onclick = async () => {
     const usadas = new Set();   // chave de disciplina única (dois HTMLs do navio trazem as mesmas chaves)
     for (const d of discs) { let k = d.key, i = 2; while (usadas.has(k)) k = d.key + '_' + i++; usadas.add(k); d.key = k }
     estado('Montando o HTML…'); await tick();
-    const meta = { titulo: ($('#projeto').value || 'Modelo') + ' • ' + ($('#sub').value || '3D'), projeto: $('#projeto').value || 'MODELO', sub: $('#sub').value || 'modelo 3D',
-      origem: [...new Set(origens)].join(' + '), nota: 'Cores originais do arquivo. Convertido pelo HTML 3D.', gerado: new Date().toLocaleString('pt-BR') };
-    const html = montarHtml(molde, discs, meta), bytes = new TextEncoder().encode(html);
-    gerado = { html, bytes, meta, discs: discs.map(d => ({ label: d.label, n: d.n })), pecas: discs.reduce((s, d) => s + d.n, 0) };
-    const seg = ((performance.now() - t0) / 1000).toFixed(0);
-    $('#resumo').innerHTML = `<b>${esc(meta.projeto)} / ${esc(meta.sub)}</b> · ${discs.length} disciplina(s) · ${fmtN(gerado.pecas)} peças · <b>${MB(bytes.length)}</b> · ${seg} s` +
-      (bytes.length > 95e6 ? '<br><span class="err">Passa de 95 MB: o GitHub não aceita. Use qualidade Leve ou separe as disciplinas.</span>' : bytes.length > 40e6 ? '<br><span class="warn">Arquivo grande: no iPhone pode demorar ou faltar memória. A qualidade Leve ajuda.</span>' : '');
-    const old = $('#prev').src; $('#prev').src = URL.createObjectURL(new Blob([bytes], { type: 'text/html' })); if (old.startsWith('blob:')) URL.revokeObjectURL(old);
-    $('#result').classList.add('on'); $('#pub').disabled = bytes.length > 95e6; $('#pubst').textContent = temChave() ? '' : 'Para publicar, configure a chave em "Publicação".';
-    estado('Pronto. Confira a prévia.'); log('Pronto em ' + seg + ' s.', 'ok');
+    const meta = metaDe([...new Set(origens)].join(' + '), 'Cores originais do arquivo. Convertido pelo HTML 3D.'), pecas = discs.reduce((s, d) => s + d.n, 0);
+    pronto({ html: montarHtml(molde, discs, meta), meta, discs: discs.map(d => ({ label: d.label, n: d.n })), pecas }, t0, `${discs.length} disciplina(s) · ${fmtN(pecas)} peças`);
   } catch (e) { console.error(e); estado(''); log('Erro: ' + (e.message || e), 'err');
     if (LOCAL && !(await fetch('api/ola', { cache: 'no-store' }).then(r => r.ok, () => false))) log('O servidor do app fechou. Feche esta janela e abra de novo pelo ABRIR_HTML3D.cmd.', 'err') }
   $('#go').disabled = !arquivos.length;
@@ -294,7 +307,7 @@ $('#pub').onclick = async () => {
     st('Lendo a lista do site…'); const l = await listaAtual(modo), ja = l.find(m => m.slug === slug);
     if (ja && !confirm('Já existe "' + ja.projeto + ' / ' + ja.sub + '". Substituir? (o link continua o mesmo)')) { st(''); $('#pub').disabled = false; return }
     const agora = new Date(), carimbo = agora.toISOString(), item = { slug, projeto: gerado.meta.projeto, sub: gerado.meta.sub, arquivo: 'm/' + slug + '.html',
-      disciplinas: gerado.discs, pecas: gerado.pecas, bytes: gerado.bytes.length, data: carimbo, dataTexto: agora.toLocaleString('pt-BR') };
+      disciplinas: gerado.discs, pecas: gerado.pecas, bytes: gerado.bytes.length, data: carimbo, dataTexto: agora.toLocaleString('pt-BR'), ...(gerado.interface ? { interface: gerado.interface } : {}) };
     const nova = [...l.filter(m => m.slug !== slug), item];
     await commit([{ path: item.arquivo, bytes: gerado.bytes }, { path: 'models.json', bytes: json(nova) }], (ja ? 'Atualiza ' : 'Publica ') + slug, st, modo);
     const ok = await esperarNoAr(carimbo, st), url = new URL(item.arquivo, PUBLICO).href;
