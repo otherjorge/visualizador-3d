@@ -618,5 +618,21 @@
   "bytes": 313564,
   "data": "2026-10-31T16:36:56.566294-03:00",
   "dataTexto": "31/10/2026, 16:36:56"
+ },
+ {
+  "slug": "cat-ele-001-acessorios-de-eletrica",
+  "projeto": "CAT-ELE-001",
+  "sub": "Acessorios de eletrica",
+  "arquivo": "m/cat-ele-001-acessorios-de-eletrica.html",
+  "disciplinas": [
+   {
+    "label": "Eletrica",
+    "n": 18
+   }
+  ],
+  "pecas": 18,
+  "bytes": 304458,
+  "data": "2026-10-31T16:37:00.295935-03:00",
+  "dataTexto": "31/10/2026, 16:37:00"
  }
 ]
