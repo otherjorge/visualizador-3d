@@ -634,5 +634,21 @@
   "bytes": 304458,
   "data": "2026-10-31T16:37:00.295935-03:00",
   "dataTexto": "31/10/2026, 16:37:00"
+ },
+ {
+  "slug": "cat-tub-001-acessorios-de-tubulacao",
+  "projeto": "CAT-TUB-001",
+  "sub": "Acessorios de tubulacao",
+  "arquivo": "m/cat-tub-001-acessorios-de-tubulacao.html",
+  "disciplinas": [
+   {
+    "label": "Tubulacao",
+    "n": 20
+   }
+  ],
+  "pecas": 20,
+  "bytes": 394461,
+  "data": "2026-10-31T16:37:03.589098-03:00",
+  "dataTexto": "31/10/2026, 16:37:03"
  }
 ]
