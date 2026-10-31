@@ -602,5 +602,21 @@
   "bytes": 127503,
   "data": "2026-10-31T16:36:51.093581-03:00",
   "dataTexto": "31/10/2026, 16:36:51"
+ },
+ {
+  "slug": "cat-ace-001-acessorios-navais",
+  "projeto": "CAT-ACE-001",
+  "sub": "Acessorios navais",
+  "arquivo": "m/cat-ace-001-acessorios-navais.html",
+  "disciplinas": [
+   {
+    "label": "Acessorios",
+    "n": 18
+   }
+  ],
+  "pecas": 18,
+  "bytes": 313564,
+  "data": "2026-10-31T16:36:56.566294-03:00",
+  "dataTexto": "31/10/2026, 16:36:56"
  }
 ]
