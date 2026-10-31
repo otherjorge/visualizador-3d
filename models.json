@@ -332,22 +332,6 @@
   "dataTexto": "28/10/2026, 19:19:34"
  },
  {
-  "slug": "cat-mov-001-movelaria-naval",
-  "projeto": "CAT-MOV-001",
-  "sub": "Movelaria naval",
-  "arquivo": "m/cat-mov-001-movelaria-naval.html",
-  "disciplinas": [
-   {
-    "label": "Moveis",
-    "n": 6
-   }
-  ],
-  "pecas": 6,
-  "bytes": 111853,
-  "data": "2026-10-28T21:17:24.491709-03:00",
-  "dataTexto": "28/10/2026, 21:17:24"
- },
- {
   "slug": "arembepe-isolamento-detalhes",
   "projeto": "AREMBEPE",
   "sub": "isolamento-detalhes",
@@ -602,5 +586,21 @@
   "bytes": 3964747,
   "data": "2026-10-31T16:18:22.674719-03:00",
   "dataTexto": "31/10/2026, 16:18:22"
+ },
+ {
+  "slug": "cat-mov-001-movelaria-naval",
+  "projeto": "CAT-MOV-001",
+  "sub": "Movelaria naval",
+  "arquivo": "m/cat-mov-001-movelaria-naval.html",
+  "disciplinas": [
+   {
+    "label": "Moveis",
+    "n": 7
+   }
+  ],
+  "pecas": 7,
+  "bytes": 127503,
+  "data": "2026-10-31T16:36:51.093581-03:00",
+  "dataTexto": "31/10/2026, 16:36:51"
  }
 ]
