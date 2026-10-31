@@ -518,5 +518,61 @@
   "bytes": 1601225,
   "data": "2026-10-30T15:17:48.162066-03:00",
   "dataTexto": "30/10/2026, 15:17:48"
+ },
+ {
+  "slug": "arembepe-waterjet-leitos-suportes-paineis",
+  "projeto": "AREMBEPE",
+  "sub": "waterjet leitos suportes paineis",
+  "arquivo": "m/arembepe-waterjet-leitos-suportes-paineis.html",
+  "disciplinas": [
+   {
+    "label": "Leitos",
+    "n": 37
+   },
+   {
+    "label": "Caminhos mecanicos",
+    "n": 21
+   },
+   {
+    "label": "Golas e Roxtec",
+    "n": 11
+   },
+   {
+    "label": "Suportes luminarias",
+    "n": 12
+   },
+   {
+    "label": "Luminarias",
+    "n": 12
+   },
+   {
+    "label": "Paineis",
+    "n": 15
+   },
+   {
+    "label": "Jazentes paineis",
+    "n": 5
+   },
+   {
+    "label": "Jazentes equipamentos",
+    "n": 16
+   },
+   {
+    "label": "Equipamentos",
+    "n": 75
+   },
+   {
+    "label": "Acessorios",
+    "n": 33
+   },
+   {
+    "label": "Estrutura",
+    "n": 34
+   }
+  ],
+  "pecas": 271,
+  "bytes": 3748677,
+  "data": "2026-10-31T14:02:12.681776-03:00",
+  "dataTexto": "31/10/2026, 14:02:12"
  }
 ]
