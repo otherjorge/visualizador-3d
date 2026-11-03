@@ -564,30 +564,6 @@
   "dataTexto": "31/10/2026, 14:24:46"
  },
  {
-  "slug": "arembepe-waterjet-proposta-leitos-piso",
-  "projeto": "AREMBEPE",
-  "sub": "waterjet proposta leitos piso",
-  "arquivo": "m/arembepe-waterjet-proposta-leitos-piso.html",
-  "disciplinas": [
-   {
-    "label": "Proposta leitos",
-    "n": 37
-   },
-   {
-    "label": "Grampos e pes",
-    "n": 29
-   },
-   {
-    "label": "Recortes",
-    "n": 7
-   }
-  ],
-  "pecas": 73,
-  "bytes": 3964747,
-  "data": "2026-10-31T16:18:22.674719-03:00",
-  "dataTexto": "31/10/2026, 16:18:22"
- },
- {
   "slug": "cat-mov-001-movelaria-naval",
   "projeto": "CAT-MOV-001",
   "sub": "Movelaria naval",
@@ -650,5 +626,29 @@
   "bytes": 347445,
   "data": "2026-11-03T09:26:03.123052-03:00",
   "dataTexto": "03/11/2026, 09:26:03"
+ },
+ {
+  "slug": "arembepe-waterjet-proposta-leitos-piso",
+  "projeto": "AREMBEPE",
+  "sub": "waterjet proposta leitos piso",
+  "arquivo": "m/arembepe-waterjet-proposta-leitos-piso.html",
+  "disciplinas": [
+   {
+    "label": "Proposta leitos",
+    "n": 37
+   },
+   {
+    "label": "Grampos e pes",
+    "n": 29
+   },
+   {
+    "label": "Recortes",
+    "n": 7
+   }
+  ],
+  "pecas": 73,
+  "bytes": 3966796,
+  "data": "2026-11-03T09:57:55.232972-03:00",
+  "dataTexto": "03/11/2026, 09:57:55"
  }
 ]
