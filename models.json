@@ -650,5 +650,29 @@
   "bytes": 3966846,
   "data": "2026-11-03T10:01:33.307543-03:00",
   "dataTexto": "03/11/2026, 10:01:33"
+ },
+ {
+  "slug": "arembepe-waterjet-proposta-luminarias",
+  "projeto": "AREMBEPE",
+  "sub": "waterjet proposta luminarias",
+  "arquivo": "m/arembepe-waterjet-proposta-luminarias.html",
+  "disciplinas": [
+   {
+    "label": "Luminarias PM",
+    "n": 12
+   },
+   {
+    "label": "Suportes novos",
+    "n": 12
+   },
+   {
+    "label": "Decisoes",
+    "n": 3
+   }
+  ],
+  "pecas": 27,
+  "bytes": 3763199,
+  "data": "2026-11-03T10:19:35.225508-03:00",
+  "dataTexto": "03/11/2026, 10:19:35"
  }
 ]
