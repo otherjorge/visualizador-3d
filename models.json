@@ -674,5 +674,25 @@
   "bytes": 6494252,
   "data": "2026-11-03T10:42:00.660434-03:00",
   "dataTexto": "03/11/2026, 10:42:00"
+ },
+ {
+  "slug": "arembepe-waterjet-sl-01-003-aprovacao",
+  "projeto": "AREMBEPE",
+  "sub": "waterjet SL-01-003 aprovacao",
+  "arquivo": "m/arembepe-waterjet-sl-01-003-aprovacao.html",
+  "disciplinas": [
+   {
+    "label": "Suportes",
+    "n": 12
+   },
+   {
+    "label": "Luminarias",
+    "n": 12
+   }
+  ],
+  "pecas": 24,
+  "bytes": 3917169,
+  "data": "2026-11-03T11:48:36.666458-03:00",
+  "dataTexto": "03/11/2026, 11:48:36"
  }
 ]
