@@ -726,5 +726,29 @@
   "bytes": 4021945,
   "data": "2026-11-03T12:24:40.154178-03:00",
   "dataTexto": "03/11/2026, 12:24:40"
+ },
+ {
+  "slug": "arembepe-waterjet-suportes-dos-leitos-do-piso-03-11",
+  "projeto": "AREMBEPE",
+  "sub": "Waterjet · suportes dos leitos do piso (03/11)",
+  "arquivo": "m/arembepe-waterjet-suportes-dos-leitos-do-piso-03-11.html",
+  "disciplinas": [
+   {
+    "label": "Pontos",
+    "n": 8
+   },
+   {
+    "label": "Grampos",
+    "n": 5
+   },
+   {
+    "label": "Pés",
+    "n": 3
+   }
+  ],
+  "pecas": 16,
+  "bytes": 3777658,
+  "data": "2026-11-03T14:10:39.507689-03:00",
+  "dataTexto": "03/11/2026, 14:10:39"
  }
 ]
