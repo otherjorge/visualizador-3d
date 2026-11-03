@@ -129,4 +129,4 @@ function setupMeasure(){
 }
 
 init().catch(showError);
-</script><script>document.querySelectorAll(".sp").forEach(function(b){b.addEventListener("click",function(){var k=b.dataset.k+" ",bx=new THREE.Box3(),i0=null;meshList.forEach(function(m,i){if(m.userData.group.indexOf(k)===0){bx.union(m.geometry.boundingBox.clone().applyMatrix4(m.matrixWorld));if(i0===null)i0=i}});if(i0===null)return;bx.expandByScalar(0.35);fit(bx);select(i0);document.querySelectorAll(".sp.on").forEach(function(e){e.classList.remove("on")});b.classList.add("on")})})</script></body></html>
+</script><script>document.querySelectorAll(".sp").forEach(function(b){b.addEventListener("click",function(){var k=b.dataset.k+" ",bx=new THREE.Box3(),i0=null;meshList.forEach(function(m,i){if(m.userData.disc==="sup_vis"&&m.userData.name.indexOf(k)===0){bx.union(m.geometry.boundingBox.clone().applyMatrix4(m.matrixWorld));if(i0===null)i0=i}});if(i0===null)return;bx.expandByScalar(0.35);fit(bx);select(i0);document.querySelectorAll(".sp.on").forEach(function(e){e.classList.remove("on")});b.classList.add("on")})})</script></body></html>
