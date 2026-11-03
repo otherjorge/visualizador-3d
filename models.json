@@ -604,22 +604,6 @@
   "dataTexto": "31/10/2026, 16:36:51"
  },
  {
-  "slug": "cat-ace-001-acessorios-navais",
-  "projeto": "CAT-ACE-001",
-  "sub": "Acessorios navais",
-  "arquivo": "m/cat-ace-001-acessorios-navais.html",
-  "disciplinas": [
-   {
-    "label": "Acessorios",
-    "n": 18
-   }
-  ],
-  "pecas": 18,
-  "bytes": 313564,
-  "data": "2026-10-31T16:36:56.566294-03:00",
-  "dataTexto": "31/10/2026, 16:36:56"
- },
- {
   "slug": "cat-ele-001-acessorios-de-eletrica",
   "projeto": "CAT-ELE-001",
   "sub": "Acessorios de eletrica",
@@ -650,5 +634,21 @@
   "bytes": 394461,
   "data": "2026-10-31T16:37:03.589098-03:00",
   "dataTexto": "31/10/2026, 16:37:03"
+ },
+ {
+  "slug": "cat-ace-001-acessorios-navais",
+  "projeto": "CAT-ACE-001",
+  "sub": "Acessorios navais",
+  "arquivo": "m/cat-ace-001-acessorios-navais.html",
+  "disciplinas": [
+   {
+    "label": "Itens",
+    "n": 19
+   }
+  ],
+  "pecas": 19,
+  "bytes": 338856,
+  "data": "2026-11-03T09:19:54.021764-03:00",
+  "dataTexto": "03/11/2026, 09:19:54"
  }
 ]
