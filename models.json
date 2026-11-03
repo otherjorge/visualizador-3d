@@ -694,5 +694,37 @@
   "bytes": 3917169,
   "data": "2026-11-03T11:48:36.666458-03:00",
   "dataTexto": "03/11/2026, 11:48:36"
+ },
+ {
+  "slug": "arembepe-waterjet-piso-fechado",
+  "projeto": "AREMBEPE",
+  "sub": "waterjet piso fechado",
+  "arquivo": "m/arembepe-waterjet-piso-fechado.html",
+  "disciplinas": [
+   {
+    "label": "Leitos",
+    "n": 37
+   },
+   {
+    "label": "Suportes",
+    "n": 29
+   },
+   {
+    "label": "Recortes",
+    "n": 8
+   },
+   {
+    "label": "Tampa",
+    "n": 1
+   },
+   {
+    "label": "Sai",
+    "n": 1
+   }
+  ],
+  "pecas": 76,
+  "bytes": 4021945,
+  "data": "2026-11-03T12:24:40.154178-03:00",
+  "dataTexto": "03/11/2026, 12:24:40"
  }
 ]
