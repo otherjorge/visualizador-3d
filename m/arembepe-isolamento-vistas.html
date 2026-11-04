@@ -65,7 +65,12 @@ function inicia(){
 const H=JSON.parse($('hdr').textContent);
 const bs=atob($('bin').textContent);const U8=new Uint8Array(bs.length);for(let i=0;i<bs.length;i++)U8[i]=bs.charCodeAt(i);
 const AB=U8.buffer,cv=$('c'),wrap=$('wrap');
-const R=new THREE.WebGLRenderer({canvas:cv,antialias:true});R.setPixelRatio(Math.min(2,window.devicePixelRatio||1));R.setClearColor(0xeef1f4);
+/* celular (04/11, "não abre no Safari"): resolução até 1,5× e pino leve quando a vista tem muitos pinos; o perfil externo
+   pedia ~10 milhões de triângulos (12.100 pinos detalhados) e o iPhone derruba o 3D */
+const movel=matchMedia('(pointer:coarse)').matches;
+const R=new THREE.WebGLRenderer({canvas:cv,antialias:true});R.setPixelRatio(Math.min(movel?1.5:2,window.devicePixelRatio||1));R.setClearColor(0xeef1f4);
+cv.addEventListener('webglcontextlost',e=>{e.preventDefault();const c=$('carr');c.style.display='flex';c.style.flexDirection='column';
+ c.innerHTML='O aparelho descarregou o 3D (falta de memória).<br><button onclick="location.reload()">Recarregar</button>'});
 const S=new THREE.Scene(),CAM=new THREE.PerspectiveCamera(38,1,.05,600);
 S.add(new THREE.HemisphereLight(0xffffff,0x8899aa,0.9));
 const sol=new THREE.DirectionalLight(0xffffff,0.7);sol.position.set(2,-3,4);S.add(sol);
@@ -105,7 +110,8 @@ const gCola=extr(fazRet(.053,.007),.0006,0),
   for(let k=0;k<m;k++){const a=k/m*2*Math.PI,u=[Math.cos(a),Math.sin(a)],v=[-u[1],u[0]],q=(r,t)=>[r*u[0]+t*w*v[0],r*u[1]+t*w*v[1]];
    P.push(q(ri,-1),q(re,-1),q(re,1),q(ri,1));for(let f=1;f<3;f++){const b=a+(f/3)*2*Math.PI/m;P.push([.0019*Math.cos(b),.0019*Math.sin(b)])}}
   P.push(P[0]);s.holes.push(poli(P.reverse()));return extr(s,.0008,0)})(),
- gC=torno([[.011,0],[.011,.0015],[.0102,.0045],[.0086,.0072],[.0062,.0092],[.0032,.0104],[0,.0108]],16);
+ gC=torno([[.011,0],[.011,.0015],[.0102,.0045],[.0086,.0072],[.0062,.0092],[.0032,.0104],[0,.0108]],16),
+ gCl=torno([[.011,0],[.0086,.0072],[.0032,.0104],[0,.0108]],8);   /* capacete leve: 48 triângulos (o completo + base + arruela ≈ 940) */
 const mCola=new THREE.MeshPhongMaterial({color:0xe6d8a4,shininess:4}),mAlu=new THREE.MeshPhongMaterial({color:0xc9ced4,specular:0x777777,shininess:60}),
  mCobre=new THREE.MeshPhongMaterial({color:0xc27a4c,specular:0x9a6440,shininess:90}),
  mGalv=new THREE.MeshPhongMaterial({color:0xd9dde2,specular:0x888888,shininess:70}),
@@ -121,6 +127,10 @@ function naVista(i){return V.cv<0||(pCv[i]===V.cv&&pZ[i]===V.z)}
 function montaPinos(){pins.forEach(o=>{S.remove(o);o.dispose()});pins=[];sel=[];
  for(let i=0;i<N;i++)if(naVista(i)&&!offL[pL[i]]&&!offE[pEsp[i]])sel.push(i);
  const n=sel.length;alvoPin=[];if(!n){pede();return}
+ if(n>(movel?2500:15000)){const c=new THREE.InstancedMesh(gCl,mCap,n);
+  sel.forEach((i,j)=>{_d.set(pDir[3*i],pDir[3*i+1],pDir[3*i+2]).normalize();_q.setFromUnitVectors(Y,_d);_p.fromArray(pPos,3*i);
+   _p.addScaledVector(_d,pEsp[i]/1000+.0008*K);_s.set(K,K,K);_m.compose(_p,_q,_s);c.setMatrixAt(j,_m);c.setColorAt(j,_c.setHex(COR_L[pL[i]]||0xff00ff))});
+  c.frustumCulled=false;c.instanceMatrix.needsUpdate=true;c.instanceColor.needsUpdate=true;S.add(c);pins.push(c);alvoPin=[c];pede();return}
  const nQ=sel.reduce((a,i)=>a+(pMat[i]===0),0),nq=Math.max(nQ,1),nC=Math.max(n-nQ,1),IM=(g,m,k)=>new THREE.InstancedMesh(g,m,k);
  const cola=IM(gCola,mCola,nq),bQ=IM(gBQ,mBase,nq),hQ=IM(gHQ,mAlu,nq),pe=IM(gPe,mPe,nC),hC=IM(gHC,mCobre,nC),a=IM(gA,mGalv,n),c=IM(gC,mCap,n);
  let iq=0,ic=0;
