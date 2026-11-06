@@ -806,5 +806,25 @@
   "bytes": 12433947,
   "data": "2026-11-06T10:50:46.210518-03:00",
   "dataTexto": "06/11/2026, 10:50:46"
+ },
+ {
+  "slug": "arembepe-conves-castelo-estrutura-acessorios",
+  "projeto": "AREMBEPE",
+  "sub": "conves castelo estrutura acessorios",
+  "arquivo": "m/arembepe-conves-castelo-estrutura-acessorios.html",
+  "disciplinas": [
+   {
+    "label": "Estrutura",
+    "n": 100
+   },
+   {
+    "label": "Acessórios",
+    "n": 825
+   }
+  ],
+  "pecas": 925,
+  "bytes": 5926783,
+  "data": "2026-11-06T10:50:52.367925-03:00",
+  "dataTexto": "06/11/2026, 10:50:52"
  }
 ]
