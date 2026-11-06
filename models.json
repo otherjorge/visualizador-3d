@@ -768,26 +768,6 @@
   "dataTexto": "05/11/2026, 09:45:45"
  },
  {
-  "slug": "arembepe-passadico-tijupa-estrutura-acessorios",
-  "projeto": "AREMBEPE",
-  "sub": "passadico tijupa estrutura acessorios",
-  "arquivo": "m/arembepe-passadico-tijupa-estrutura-acessorios.html",
-  "disciplinas": [
-   {
-    "label": "Estrutura",
-    "n": 34
-   },
-   {
-    "label": "Acessórios",
-    "n": 827
-   }
-  ],
-  "pecas": 861,
-  "bytes": 5023089,
-  "data": "2026-11-06T11:23:00.466808-03:00",
-  "dataTexto": "06/11/2026, 11:23:00"
- },
- {
   "slug": "arembepe-duplo-fundo-pm-estrutura-acessorios",
   "projeto": "AREMBEPE",
   "sub": "duplo fundo pm estrutura acessorios",
@@ -846,5 +826,25 @@
   "bytes": 5415243,
   "data": "2026-11-06T12:13:46.316806-03:00",
   "dataTexto": "06/11/2026, 12:13:46"
+ },
+ {
+  "slug": "arembepe-passadico-tijupa-estrutura-acessorios",
+  "projeto": "AREMBEPE",
+  "sub": "passadico tijupa estrutura acessorios",
+  "arquivo": "m/arembepe-passadico-tijupa-estrutura-acessorios.html",
+  "disciplinas": [
+   {
+    "label": "Estrutura",
+    "n": 34
+   },
+   {
+    "label": "Acessórios",
+    "n": 821
+   }
+  ],
+  "pecas": 855,
+  "bytes": 5007421,
+  "data": "2026-11-06T12:13:52.676881-03:00",
+  "dataTexto": "06/11/2026, 12:13:52"
  }
 ]
