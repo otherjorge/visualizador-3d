@@ -768,26 +768,6 @@
   "dataTexto": "05/11/2026, 09:45:45"
  },
  {
-  "slug": "arembepe-duplo-fundo-pm-estrutura-acessorios",
-  "projeto": "AREMBEPE",
-  "sub": "duplo fundo pm estrutura acessorios",
-  "arquivo": "m/arembepe-duplo-fundo-pm-estrutura-acessorios.html",
-  "disciplinas": [
-   {
-    "label": "Estrutura",
-    "n": 937
-   },
-   {
-    "label": "Acessórios",
-    "n": 845
-   }
-  ],
-  "pecas": 1782,
-  "bytes": 11146126,
-  "data": "2026-11-06T11:22:43.391309-03:00",
-  "dataTexto": "06/11/2026, 11:22:43"
- },
- {
   "slug": "arembepe-conves-principal-estrutura-acessorios",
   "projeto": "AREMBEPE",
   "sub": "conves principal estrutura acessorios",
@@ -846,5 +826,25 @@
   "bytes": 5023089,
   "data": "2026-11-06T11:23:00.466808-03:00",
   "dataTexto": "06/11/2026, 11:23:00"
+ },
+ {
+  "slug": "arembepe-duplo-fundo-pm-estrutura-acessorios",
+  "projeto": "AREMBEPE",
+  "sub": "duplo fundo pm estrutura acessorios",
+  "arquivo": "m/arembepe-duplo-fundo-pm-estrutura-acessorios.html",
+  "disciplinas": [
+   {
+    "label": "Estrutura",
+    "n": 937
+   },
+   {
+    "label": "Acessórios",
+    "n": 706
+   }
+  ],
+  "pecas": 1643,
+  "bytes": 11053002,
+  "data": "2026-11-06T12:13:33.495784-03:00",
+  "dataTexto": "06/11/2026, 12:13:33"
  }
 ]
