@@ -768,26 +768,6 @@
   "dataTexto": "05/11/2026, 09:45:45"
  },
  {
-  "slug": "arembepe-conves-principal-estrutura-acessorios",
-  "projeto": "AREMBEPE",
-  "sub": "conves principal estrutura acessorios",
-  "arquivo": "m/arembepe-conves-principal-estrutura-acessorios.html",
-  "disciplinas": [
-   {
-    "label": "Estrutura",
-    "n": 387
-   },
-   {
-    "label": "Acessórios",
-    "n": 1210
-   }
-  ],
-  "pecas": 1597,
-  "bytes": 12433371,
-  "data": "2026-11-06T11:22:49.480626-03:00",
-  "dataTexto": "06/11/2026, 11:22:49"
- },
- {
   "slug": "arembepe-conves-castelo-estrutura-acessorios",
   "projeto": "AREMBEPE",
   "sub": "conves castelo estrutura acessorios",
@@ -846,5 +826,25 @@
   "bytes": 11053002,
   "data": "2026-11-06T12:13:33.495784-03:00",
   "dataTexto": "06/11/2026, 12:13:33"
+ },
+ {
+  "slug": "arembepe-conves-principal-estrutura-acessorios",
+  "projeto": "AREMBEPE",
+  "sub": "conves principal estrutura acessorios",
+  "arquivo": "m/arembepe-conves-principal-estrutura-acessorios.html",
+  "disciplinas": [
+   {
+    "label": "Estrutura",
+    "n": 387
+   },
+   {
+    "label": "Acessórios",
+    "n": 810
+   }
+  ],
+  "pecas": 1197,
+  "bytes": 12484218,
+  "data": "2026-11-06T12:13:39.731397-03:00",
+  "dataTexto": "06/11/2026, 12:13:39"
  }
 ]
