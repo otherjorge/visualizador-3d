@@ -786,5 +786,25 @@
   "bytes": 11147230,
   "data": "2026-11-06T10:50:40.244157-03:00",
   "dataTexto": "06/11/2026, 10:50:40"
+ },
+ {
+  "slug": "arembepe-conves-principal-estrutura-acessorios",
+  "projeto": "AREMBEPE",
+  "sub": "conves principal estrutura acessorios",
+  "arquivo": "m/arembepe-conves-principal-estrutura-acessorios.html",
+  "disciplinas": [
+   {
+    "label": "Estrutura",
+    "n": 387
+   },
+   {
+    "label": "Acessórios",
+    "n": 1210
+   }
+  ],
+  "pecas": 1597,
+  "bytes": 12433947,
+  "data": "2026-11-06T10:50:46.210518-03:00",
+  "dataTexto": "06/11/2026, 10:50:46"
  }
 ]
