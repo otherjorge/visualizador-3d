@@ -872,6 +872,22 @@
   "dataTexto": "10/11/2026, 08:32:16"
  },
  {
+  "slug": "arembepe-waterjet-suportes-leitos-be-10-11",
+  "projeto": "AREMBEPE",
+  "sub": "waterjet suportes leitos BE 10-11",
+  "arquivo": "m/arembepe-waterjet-suportes-leitos-be-10-11.html",
+  "disciplinas": [
+   {
+    "label": "Suportes",
+    "n": 66
+   }
+  ],
+  "pecas": 66,
+  "bytes": 3833838,
+  "data": "2026-11-10T16:59:50.391632-03:00",
+  "dataTexto": "10/11/2026, 16:59:50"
+ },
+ {
   "slug": "arembepe-estrutura-acabamento-hvac",
   "projeto": "AREMBEPE",
   "sub": "estrutura acabamento hvac",
@@ -891,24 +907,8 @@
    }
   ],
   "pecas": 24850,
-  "bytes": 32634930,
-  "data": "2026-11-10T15:45:45.938112-03:00",
-  "dataTexto": "10/11/2026, 15:45:45"
- },
- {
-  "slug": "arembepe-waterjet-suportes-leitos-be-10-11",
-  "projeto": "AREMBEPE",
-  "sub": "waterjet suportes leitos BE 10-11",
-  "arquivo": "m/arembepe-waterjet-suportes-leitos-be-10-11.html",
-  "disciplinas": [
-   {
-    "label": "Suportes",
-    "n": 66
-   }
-  ],
-  "pecas": 66,
-  "bytes": 3833838,
-  "data": "2026-11-10T16:59:50.391632-03:00",
-  "dataTexto": "10/11/2026, 16:59:50"
+  "bytes": 32630090,
+  "data": "2026-11-10T17:06:35.791846-03:00",
+  "dataTexto": "10/11/2026, 17:06:35"
  }
 ]
