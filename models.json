@@ -894,5 +894,21 @@
   "bytes": 32634930,
   "data": "2026-11-10T15:45:45.938112-03:00",
   "dataTexto": "10/11/2026, 15:45:45"
+ },
+ {
+  "slug": "arembepe-waterjet-suportes-leitos-be-10-11",
+  "projeto": "AREMBEPE",
+  "sub": "waterjet suportes leitos BE 10-11",
+  "arquivo": "m/arembepe-waterjet-suportes-leitos-be-10-11.html",
+  "disciplinas": [
+   {
+    "label": "Suportes",
+    "n": 66
+   }
+  ],
+  "pecas": 66,
+  "bytes": 3833838,
+  "data": "2026-11-10T16:59:50.391632-03:00",
+  "dataTexto": "10/11/2026, 16:59:50"
  }
 ]
