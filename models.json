@@ -870,5 +870,29 @@
   "bytes": 32619024,
   "data": "2026-11-10T08:32:07.018483-03:00",
   "dataTexto": "10/11/2026, 08:32:07"
+ },
+ {
+  "slug": "arembepe-ventilacao-exaustao-passagens",
+  "projeto": "AREMBEPE",
+  "sub": "ventilacao exaustao passagens",
+  "arquivo": "m/arembepe-ventilacao-exaustao-passagens.html",
+  "disciplinas": [
+   {
+    "label": "Estrutura",
+    "n": 6752
+   },
+   {
+    "label": "Ventilacao",
+    "n": 1096
+   },
+   {
+    "label": "Exaustao",
+    "n": 597
+   }
+  ],
+  "pecas": 8445,
+  "bytes": 12850027,
+  "data": "2026-11-10T08:32:16.025196-03:00",
+  "dataTexto": "10/11/2026, 08:32:16"
  }
 ]
