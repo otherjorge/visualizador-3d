@@ -848,30 +848,6 @@
   "dataTexto": "06/11/2026, 12:13:52"
  },
  {
-  "slug": "arembepe-estrutura-acabamento-hvac",
-  "projeto": "AREMBEPE",
-  "sub": "estrutura acabamento hvac",
-  "arquivo": "m/arembepe-estrutura-acabamento-hvac.html",
-  "disciplinas": [
-   {
-    "label": "Estrutura",
-    "n": 6752
-   },
-   {
-    "label": "Acabamento",
-    "n": 7262
-   },
-   {
-    "label": "HVAC",
-    "n": 10836
-   }
-  ],
-  "pecas": 24850,
-  "bytes": 32619024,
-  "data": "2026-11-10T08:32:07.018483-03:00",
-  "dataTexto": "10/11/2026, 08:32:07"
- },
- {
   "slug": "arembepe-ventilacao-exaustao-passagens",
   "projeto": "AREMBEPE",
   "sub": "ventilacao exaustao passagens",
@@ -894,5 +870,29 @@
   "bytes": 12850027,
   "data": "2026-11-10T08:32:16.025196-03:00",
   "dataTexto": "10/11/2026, 08:32:16"
+ },
+ {
+  "slug": "arembepe-estrutura-acabamento-hvac",
+  "projeto": "AREMBEPE",
+  "sub": "estrutura acabamento hvac",
+  "arquivo": "m/arembepe-estrutura-acabamento-hvac.html",
+  "disciplinas": [
+   {
+    "label": "Estrutura",
+    "n": 6752
+   },
+   {
+    "label": "Acabamento",
+    "n": 7262
+   },
+   {
+    "label": "HVAC",
+    "n": 10836
+   }
+  ],
+  "pecas": 24850,
+  "bytes": 32634930,
+  "data": "2026-11-10T15:45:45.938112-03:00",
+  "dataTexto": "10/11/2026, 15:45:45"
  }
 ]
