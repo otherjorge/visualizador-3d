@@ -846,5 +846,29 @@
   "bytes": 5007421,
   "data": "2026-11-06T12:13:52.676881-03:00",
   "dataTexto": "06/11/2026, 12:13:52"
+ },
+ {
+  "slug": "arembepe-estrutura-acabamento-hvac",
+  "projeto": "AREMBEPE",
+  "sub": "estrutura acabamento hvac",
+  "arquivo": "m/arembepe-estrutura-acabamento-hvac.html",
+  "disciplinas": [
+   {
+    "label": "Estrutura",
+    "n": 6752
+   },
+   {
+    "label": "Acabamento",
+    "n": 7262
+   },
+   {
+    "label": "HVAC",
+    "n": 10836
+   }
+  ],
+  "pecas": 24850,
+  "bytes": 32619024,
+  "data": "2026-11-10T08:32:07.018483-03:00",
+  "dataTexto": "10/11/2026, 08:32:07"
  }
 ]
