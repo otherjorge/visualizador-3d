@@ -910,5 +910,21 @@
   "bytes": 32619910,
   "data": "2026-11-11T11:10:27.629025-03:00",
   "dataTexto": "11/11/2026, 11:10:27"
+ },
+ {
+  "slug": "fraternidade-3d-e-esquemas-de-bateria",
+  "projeto": "FRATERNIDADE",
+  "sub": "3D e esquemas de bateria",
+  "arquivo": "m/fraternidade-3d-e-esquemas-de-bateria.html",
+  "disciplinas": [
+   {
+    "label": "Fraternidade",
+    "n": 4
+   }
+  ],
+  "pecas": 4,
+  "bytes": 4727366,
+  "data": "2026-11-12T15:25:24.734958-03:00",
+  "dataTexto": "12/11/2026, 15:25:24"
  }
 ]
