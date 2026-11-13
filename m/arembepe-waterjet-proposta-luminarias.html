@@ -80,11 +80,11 @@ function loadDisc(d){if(d.loading)return d.loading;d.row.classList.add('wait');d
  const bin=await gunzipAny(bytes),dv=new DataView(bin.buffer,bin.byteOffset,bin.byteLength),hlen=dv.getUint32(0,true),start=bin.byteOffset+((4+hlen+3)&~3);
  const H=JSON.parse(new TextDecoder().decode(bin.subarray(4,4+hlen)));setLoad(d.label+': montando '+H.meshes.length.toLocaleString('pt-BR')+' geometrias…');await tick();
  const geos=H.meshes.map(m=>{const q=new Uint16Array(bin.buffer,start+m.qo,m.vn*3),b=m.b,p=new Float32Array(m.vn*3);for(let i=0;i<p.length;i+=3){p[i]=b[0]+q[i]*b[3];p[i+1]=b[1]+q[i+1]*b[4];p[i+2]=b[2]+q[i+2]*b[5]}
-  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(p,3));g.setIndex(new THREE.BufferAttribute(m.w===4?new Uint32Array(bin.buffer,start+m.io,m.ni):new Uint16Array(bin.buffer,start+m.io,m.ni),1));g.computeBoundingBox();g.computeBoundingSphere();return g});
+  const IX=m.w===4?new Uint32Array(bin.buffer,start+m.io,m.ni):new Uint16Array(bin.buffer,start+m.io,m.ni);if((H.counts&&H.counts.triangles||1e9)<450000)return softGeo(p,q,IX);const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(p,3));g.setIndex(new THREE.BufferAttribute(IX,1));g.computeBoundingBox();g.computeBoundingSphere();return g});
  const I=H.inst,hid=new Set(I.h),dc=new THREE.Color(DISC_COLOR[d.key]||0x9aa3a9);
  for(let k=0;k<I.n.length;k++){const mesh=H.meshes[I.m[k]],a=I.t.slice(k*13,k*13+13),s=a[12]||1,id=meshList.length,
   it={name:I.n[k],group:H.groups[I.g[k]],file:H.files[I.f[k]],config:H.configs[I.c[k]],disc:d.key,discLabel:d.label},
-  mat=new THREE.MeshStandardMaterial({color:new THREE.Color(...mesh.c),roughness:.73,metalness:.12,side:THREE.DoubleSide,flatShading:true,clippingPlanes:clipOn?[clipPlane]:[]}),
+  mat=new THREE.MeshStandardMaterial({color:new THREE.Color().setRGB(...mesh.c,THREE.SRGBColorSpace),roughness:.62,metalness:0,side:THREE.DoubleSide,flatShading:!geos[I.m[k]].attributes.normal,clippingPlanes:clipOn?[clipPlane]:[]}),
   m=new THREE.Mesh(geos[I.m[k]],mat);
   m.matrix.set(a[0]*s,a[3]*s,a[6]*s,a[9],a[1]*s,a[4]*s,a[7]*s,a[10],a[2]*s,a[5]*s,a[8]*s,a[11],0,0,0,1);m.matrixAutoUpdate=false;
   m.userData={...it,id,base:mat.color.clone(),dcolor:dc};if(discColor)mat.color.copy(dc);root.add(m);meshList.push(m);if(hid.has(k))hidden.add(id);
@@ -92,6 +92,13 @@ function loadDisc(d){if(d.loading)return d.loading;d.row.classList.add('wait');d
  root.updateMatrixWorld(true);
  d.H={source:H.source,exportedAt:H.exportedAt,n:I.n.length,geo:H.meshes.length,tri:H.counts.triangles,supp:H.counts.suppressed,hid:I.h.length,omitted:H.omitted,reduced:H.reduced||[]};
  d.loaded=true;d.row.classList.remove('wait');d.row.querySelector('em').textContent=I.n.length.toLocaleString('pt-BR');updateMeta()})();return d.loading}
+function softGeo(p,q,I){const n=I.length,t=n/3,nvx=p.length/3,key=new Map(),vid=new Int32Array(nvx);let nv=0;for(let i=0;i<nvx;i++){const k=q[i*3]*4294967296+q[i*3+1]*65536+q[i*3+2];let id=key.get(k);if(id===undefined){id=nv++;key.set(k,id)}vid[i]=id}
+const fn=new Float32Array(t*3),acc=new Float32Array(nv*3),pos=new Float32Array(n*3),nor=new Float32Array(n*3);
+for(let f=0;f<t;f++){const a=I[f*3]*3,b=I[f*3+1]*3,c=I[f*3+2]*3,ux=p[b]-p[a],uy=p[b+1]-p[a+1],uz=p[b+2]-p[a+2],vx=p[c]-p[a],vy=p[c+1]-p[a+1],vz=p[c+2]-p[a+2],nx=uy*vz-uz*vy,ny=uz*vx-ux*vz,nz=ux*vy-uy*vx,l=Math.hypot(nx,ny,nz)||1;fn[f*3]=nx/l;fn[f*3+1]=ny/l;fn[f*3+2]=nz/l;
+ for(let j=0;j<3;j++){const s=I[f*3+j],v=vid[s]*3,o=(f*3+j)*3;acc[v]+=nx;acc[v+1]+=ny;acc[v+2]+=nz;pos[o]=p[s*3];pos[o+1]=p[s*3+1];pos[o+2]=p[s*3+2]}}
+for(let i=0;i<nv;i++){const x=acc[i*3],y=acc[i*3+1],z=acc[i*3+2],l=Math.hypot(x,y,z)||1;acc[i*3]=x/l;acc[i*3+1]=y/l;acc[i*3+2]=z/l}
+for(let f=0;f<t;f++)for(let j=0;j<3;j++){const v=vid[I[f*3+j]]*3,o=(f*3+j)*3,ax=acc[v],ay=acc[v+1],az=acc[v+2],fx=fn[f*3],fy=fn[f*3+1],fz=fn[f*3+2],d=ax*fx+ay*fy+az*fz;if(d>.82){nor[o]=ax;nor[o+1]=ay;nor[o+2]=az}else{nor[o]=fx;nor[o+1]=fy;nor[o+2]=fz}}
+const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(pos,3));g.setAttribute('normal',new THREE.BufferAttribute(nor,3));g.computeBoundingBox();g.computeBoundingSphere();return g}
 function updateMeta(){
  fullBox=new THREE.Box3();for(const m of meshList)fullBox.union(m.geometry.boundingBox.clone().applyMatrix4(m.matrixWorld));
  const sel=$('#groups'),cur=sel.value;sel.replaceChildren();const op0=document.createElement('option');op0.value='';op0.textContent='Todos os conjuntos';sel.append(op0);
@@ -106,7 +113,7 @@ function updateMeta(){
 async function init(){
  setLoad('Lendo dados do modelo…');await tick();
  renderer=new THREE.WebGLRenderer({canvas:$('#view'),antialias:!PHONE,alpha:true});$('#view').addEventListener('webglcontextlost',e=>{e.preventDefault();showError(Error('O aparelho ficou sem memória gráfica para este modelo. Desligue grupos, feche outras abas e recarregue a página.'))});renderer.setPixelRatio(Math.min(devicePixelRatio,PHONE?1.5:2));renderer.localClippingEnabled=true;renderer.outputColorSpace=THREE.SRGBColorSpace;
- scene=new THREE.Scene();camera=new THREE.PerspectiveCamera(42,1,.01,10000);camera.up.set(0,0,1);scene.add(new THREE.HemisphereLight(0xdcefff,0x697885,2.3));const key=new THREE.DirectionalLight(0xffffff,2.5);key.position.set(25,-35,65);scene.add(key);const fill=new THREE.DirectionalLight(0xc4e7ff,1.3);fill.position.set(-20,40,20);scene.add(fill);root=new THREE.Group();scene.add(root);
+ scene=new THREE.Scene();camera=new THREE.PerspectiveCamera(42,1,.01,10000);camera.up.set(0,0,1);scene.add(new THREE.HemisphereLight(0xffffff,0x5d6670,1.05));const key=new THREE.DirectionalLight(0xffffff,1.9),kt=new THREE.Object3D();key.position.set(-.35,.55,1);kt.position.set(0,0,-1);camera.add(key);camera.add(kt);key.target=kt;scene.add(camera);const fill=new THREE.DirectionalLight(0xffffff,.45);fill.position.set(-20,40,30);scene.add(fill);root=new THREE.Group();scene.add(root);
  const box=$('#discs');
  discs=Array.from(document.querySelectorAll('script.disc')).map(el=>{const d={el,key:el.dataset.k,label:el.dataset.label,n:+el.dataset.n,tri:+el.dataset.tri};
   const row=document.createElement('label');row.className='disc';row.innerHTML=`<input type="checkbox" checked><i style="background:#${(DISC_COLOR[d.key]||0x9aa3a9).toString(16).padStart(6,'0')}"></i><span>${esc(d.label)}</span><em>${d.n.toLocaleString('pt-BR')}</em>`;
@@ -118,7 +125,7 @@ async function init(){
  {const d=discs.find(x=>x.key==='lum_atual');if(d){d.cb.checked=false;discOff.add(d.key)}}for(const d of discs)if(!discOff.has(d.key))await loadDisc(d);
  $('#disccolor').onclick=()=>{discColor=!discColor;$('#disccolor').classList.toggle('on',discColor);for(const m of meshList)m.material.color.copy(discColor?m.userData.dcolor:m.userData.base);dirty=true};
  frameBox=fullBox.clone();
- setup();setupMeasure();applyFilters();$('#loading').style.display='none';resize();fit();animate();requestAnimationFrame(()=>{resize();if(!isFinite(radius))fit()});window.VIEWER_READY=true;
+ setup();setupMeasure();applyFilters();$('#loading').style.display='none';resize();fit();animate();requestAnimationFrame(()=>{resize();if(!isFinite(radius))fit()});window.__V={THREE,scene,camera,renderer,root,meshList,fit,select,applyFilters,get box(){return fullBox},redraw(){dirty=true}};window.VIEWER_READY=true;
 }
 
 function boxForVisible(){const bs=[];for(const m of meshList)if(m.visible)bs.push(m.geometry.boundingBox.clone().applyMatrix4(m.matrixWorld));const b=new THREE.Box3();if(bs.length<200){bs.forEach(x=>b.union(x));return b}const q=(a,p)=>a[Math.min(a.length-1,Math.max(0,Math.round(p*(a.length-1))))];for(const k of ['x','y','z']){const lo=bs.map(x=>x.min[k]).sort((u,v)=>u-v),hi=bs.map(x=>x.max[k]).sort((u,v)=>u-v);b.min[k]=q(lo,.005);b.max[k]=q(hi,.995)}return b}
