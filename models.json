@@ -942,21 +942,5 @@
   "bytes": 13074943,
   "data": "2026-11-13T12:24:57.322115-03:00",
   "dataTexto": "13/11/2026, 12:24:57"
- },
- {
-  "slug": "d-cn038-2-42-36",
-  "projeto": "CN-038 DESENHOS",
-  "sub": "2.42.36 R00 · DESENHO DE FABRICAÇÃO / SUPORTE DOS LEITOS / COMPARTIMENTO DO WATERJET",
-  "arquivo": "d/cn038/2.42.36/index.html",
-  "disciplinas": [
-   {
-    "label": "Desenho 2.42.36",
-    "n": 64
-   }
-  ],
-  "pecas": 64,
-  "bytes": 742250,
-  "data": "2026-11-18T11:05:52.287608-03:00",
-  "dataTexto": "18/11/2026, 11:05:52"
  }
 ]
