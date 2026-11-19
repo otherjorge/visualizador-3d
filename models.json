@@ -942,5 +942,21 @@
   "bytes": 13074943,
   "data": "2026-11-13T12:24:57.322115-03:00",
   "dataTexto": "13/11/2026, 12:24:57"
+ },
+ {
+  "slug": "d-cn038-forro-esteira-academia",
+  "projeto": "CN-038 DESENHOS",
+  "sub": "Detalhe forro da esteira (academia) R00 · aprovado 19/11/2026",
+  "arquivo": "d/cn038/forro-esteira-academia/index.html",
+  "disciplinas": [
+   {
+    "label": "Forro + academia",
+    "n": 219
+   }
+  ],
+  "pecas": 219,
+  "bytes": 1791762,
+  "data": "2026-11-19T16:32:45.615139-03:00",
+  "dataTexto": "19/11/2026, 16:32:45"
  }
 ]
